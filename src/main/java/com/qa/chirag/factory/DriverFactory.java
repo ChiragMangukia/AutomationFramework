@@ -19,6 +19,8 @@ public class DriverFactory {
 			String browser = prop.getProperty("browser").trim();
 			if(browser.equalsIgnoreCase("chrome")) {
 				driver = WebDriverManager.chromedriver().capabilities(optionsManager.getChromeOptions()).create();
+			} else if(browser.equalsIgnoreCase("firefox")) {
+				driver = WebDriverManager.firefoxdriver().capabilities(optionsManager.getFirefoxOptions()).create();
 			}
 		}
 		driver.manage().deleteAllCookies();
