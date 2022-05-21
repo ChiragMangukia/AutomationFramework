@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Utilities {
-	
+
 	public static Properties getProp() {
 		Properties prop = new Properties();
 		String path = "./src/test/resources/config.properties";
-		
+
 		FileInputStream ip;
 		try {
 			ip = new FileInputStream(path);

@@ -8,18 +8,18 @@ import com.qa.chirag.utils.OptionsManager;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DriverFactory {
-	
+
 	protected WebDriver driver = null;
 	OptionsManager optionsManager;
-	
+
 	public WebDriver initDriver(Properties prop) {
-		
-		if(driver == null) {
+
+		if (driver == null) {
 			optionsManager = new OptionsManager(prop);
 			String browser = prop.getProperty("browser").trim();
-			if(browser.equalsIgnoreCase("chrome")) {
+			if (browser.equalsIgnoreCase("chrome")) {
 				driver = WebDriverManager.chromedriver().capabilities(optionsManager.getChromeOptions()).create();
-			} else if(browser.equalsIgnoreCase("firefox")) {
+			} else if (browser.equalsIgnoreCase("firefox")) {
 				driver = WebDriverManager.firefoxdriver().capabilities(optionsManager.getFirefoxOptions()).create();
 			}
 		}
@@ -28,6 +28,5 @@ public class DriverFactory {
 		driver.get(prop.getProperty("url").trim());
 		return driver;
 	}
-	
 
 }

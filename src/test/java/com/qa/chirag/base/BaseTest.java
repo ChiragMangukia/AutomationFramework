@@ -9,10 +9,10 @@ import com.qa.chirag.pages.HomePage;
 import com.qa.chirag.utils.Utilities;
 
 public class BaseTest {
-	
+
 	DriverFactory df;
 	WebDriver driver;
-	
+
 	protected HomePage homePage;
 
 	@BeforeTest
@@ -21,7 +21,7 @@ public class BaseTest {
 		driver = df.initDriver(Utilities.getProp());
 		homePage = new HomePage(driver);
 	}
-	
+
 	@AfterTest
 	public void tearDown() {
 		driver.quit();
