@@ -3,8 +3,6 @@ package com.qa.chirag.factory;
 import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
 import com.qa.chirag.utils.OptionsManager;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -20,8 +18,7 @@ public class DriverFactory {
 			optionsManager = new OptionsManager(prop);
 			String browser = prop.getProperty("browser").trim();
 			if(browser.equalsIgnoreCase("chrome")) {
-				WebDriverManager.chromedriver().setup();
-				driver = new ChromeDriver(optionsManager.getChromeOptions());
+				driver = WebDriverManager.chromedriver().capabilities(optionsManager.getChromeOptions()).create();
 			}
 		}
 		driver.manage().deleteAllCookies();
