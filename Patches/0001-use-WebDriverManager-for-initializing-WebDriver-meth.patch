@@ -1,0 +1,35 @@
+From 4c9692e454fee08067a080a8d9898f52fd58221d Mon Sep 17 00:00:00 2001
+From: Chirag Mangukia <chirag.mangukia@gmail.com>
+Date: Sat, 21 May 2022 15:20:05 +0530
+Subject: [PATCH] use WebDriverManager for initializing WebDriver method
+
+---
+ src/main/java/com/qa/chirag/factory/DriverFactory.java | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/src/main/java/com/qa/chirag/factory/DriverFactory.java b/src/main/java/com/qa/chirag/factory/DriverFactory.java
+index 16e0ebb..da688bd 100644
+--- a/src/main/java/com/qa/chirag/factory/DriverFactory.java
++++ b/src/main/java/com/qa/chirag/factory/DriverFactory.java
+@@ -3,8 +3,6 @@ package com.qa.chirag.factory;
+ import java.util.Properties;
+ 
+ import org.openqa.selenium.WebDriver;
+-import org.openqa.selenium.chrome.ChromeDriver;
+-
+ import com.qa.chirag.utils.OptionsManager;
+ 
+ import io.github.bonigarcia.wdm.WebDriverManager;
+@@ -20,8 +18,7 @@ public class DriverFactory {
+ 			optionsManager = new OptionsManager(prop);
+ 			String browser = prop.getProperty("browser").trim();
+ 			if(browser.equalsIgnoreCase("chrome")) {
+-				WebDriverManager.chromedriver().setup();
+-				driver = new ChromeDriver(optionsManager.getChromeOptions());
++				driver = WebDriverManager.chromedriver().capabilities(optionsManager.getChromeOptions()).create();
+ 			}
+ 		}
+ 		driver.manage().deleteAllCookies();
+-- 
+2.34.1.windows.1
+
