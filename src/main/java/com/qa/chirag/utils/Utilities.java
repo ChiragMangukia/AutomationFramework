@@ -29,11 +29,12 @@ public class Utilities {
 		}
 		return prop;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param driver Accepts WebDriver object
-	 * @return Screenshots are stored in Screenshot folder at the root directory. Saved file name is returned.
+	 * @return Screenshots are stored in Screenshot folder at the root directory.
+	 *         Saved file name is returned.
 	 */
 	public static String takeScreenshot(WebDriver driver) {
 		String fileName = "";
