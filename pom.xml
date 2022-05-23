@@ -3,7 +3,7 @@
 
 	<groupId>AutomationFramework</groupId>
 	<artifactId>AutomationFramework</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 	<packaging>jar</packaging>
 
 	<name>Chirag Mangukia</name>
@@ -36,7 +36,6 @@
 			<artifactId>extentreports</artifactId>
 			<version>3.1.5</version>
 		</dependency>
-
 	</dependencies>
 
 </project>
