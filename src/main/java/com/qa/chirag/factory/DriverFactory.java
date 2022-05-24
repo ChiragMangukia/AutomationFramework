@@ -23,9 +23,9 @@ public class DriverFactory {
 		if (driver == null) {
 			optionsManager = new OptionsManager(prop);
 			String browser = prop.getProperty("browser").trim();
-			if (browser.equalsIgnoreCase(Browsers.CHROME.toString())) {
+			if (browser.equalsIgnoreCase(Browsers.CHROME)) {
 				driver = WebDriverManager.chromedriver().capabilities(optionsManager.getChromeOptions()).create();
-			} else if (browser.equalsIgnoreCase(Browsers.FIREFOX.toString())) {
+			} else if (browser.equalsIgnoreCase(Browsers.FIREFOX)) {
 				driver = WebDriverManager.firefoxdriver().capabilities(optionsManager.getFirefoxOptions()).create();
 			}
 		}
