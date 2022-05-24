@@ -1,0 +1,59 @@
+From 9c0f04e3e70f35867538d98abeaa9e9315d87ab9 Mon Sep 17 00:00:00 2001
+From: Chirag Mangukia <chirag.mangukia@gmail.com>
+Date: Tue, 24 May 2022 19:00:29 +0530
+Subject: [PATCH] Added check and create folder functionality for Reports and
+ Screenshots
+
+---
+ src/main/java/com/qa/chirag/listeners/TestNGListener.java | 3 +++
+ src/main/java/com/qa/chirag/utils/Utilities.java          | 8 ++++++++
+ 2 files changed, 11 insertions(+)
+
+diff --git a/src/main/java/com/qa/chirag/listeners/TestNGListener.java b/src/main/java/com/qa/chirag/listeners/TestNGListener.java
+index a6849e6..3575476 100644
+--- a/src/main/java/com/qa/chirag/listeners/TestNGListener.java
++++ b/src/main/java/com/qa/chirag/listeners/TestNGListener.java
+@@ -14,6 +14,7 @@ import com.aventstack.extentreports.markuputils.ExtentColor;
+ import com.aventstack.extentreports.markuputils.MarkupHelper;
+ import com.qa.chirag.factory.DriverFactory;
+ import com.qa.chirag.utils.ExtentReport;
++import com.qa.chirag.utils.Utilities;
+ 
+ public class TestNGListener implements ITestListener {
+ 
+@@ -68,6 +69,8 @@ public class TestNGListener implements ITestListener {
+ 
+ 	@Override
+ 	public void onStart(ITestContext context) {
++		Utilities.checkAndCreateFolder("./Reports");
++		Utilities.checkAndCreateFolder("./Screenshots");
+ 		extentReport = new ExtentReport();
+ 		extent = extentReport.initReport();
+ 	}
+diff --git a/src/main/java/com/qa/chirag/utils/Utilities.java b/src/main/java/com/qa/chirag/utils/Utilities.java
+index d8f128c..a3e4936 100644
+--- a/src/main/java/com/qa/chirag/utils/Utilities.java
++++ b/src/main/java/com/qa/chirag/utils/Utilities.java
+@@ -1,5 +1,6 @@
+ package com.qa.chirag.utils;
+ 
++import java.io.File;
+ import java.io.FileInputStream;
+ import java.io.FileNotFoundException;
+ import java.io.IOException;
+@@ -22,5 +23,12 @@ public class Utilities {
+ 		}
+ 		return prop;
+ 	}
++	
++	public static void checkAndCreateFolder(String folderPath) {
++		File file = new File(folderPath);
++		if(!file.exists()) {
++			file.mkdir();
++		}
++	}
+ 
+ }
+-- 
+2.36.1.windows.1
+
