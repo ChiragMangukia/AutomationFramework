@@ -34,7 +34,7 @@ public class DriverFactory {
 		driver.get(prop.getProperty("url").trim());
 		return driver;
 	}
-	
+
 	/**
 	 *
 	 * @param driver Accepts WebDriver object

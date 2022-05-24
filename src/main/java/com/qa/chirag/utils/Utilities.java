@@ -23,10 +23,10 @@ public class Utilities {
 		}
 		return prop;
 	}
-	
+
 	public static void checkAndCreateFolder(String folderPath) {
 		File file = new File(folderPath);
-		if(!file.exists()) {
+		if (!file.exists()) {
 			file.mkdir();
 		}
 	}

@@ -9,7 +9,7 @@ import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
 public class ExtentReport {
-	
+
 	public ExtentReports initReport() {
 
 		ExtentHtmlReporter htmlReporter;
