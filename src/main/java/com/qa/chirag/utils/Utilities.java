@@ -1,5 +1,6 @@
 package com.qa.chirag.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,6 +22,13 @@ public class Utilities {
 			e.printStackTrace();
 		}
 		return prop;
+	}
+	
+	public static void checkAndCreateFolder(String folderPath) {
+		File file = new File(folderPath);
+		if(!file.exists()) {
+			file.mkdir();
+		}
 	}
 
 }

@@ -14,6 +14,7 @@ import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.qa.chirag.factory.DriverFactory;
 import com.qa.chirag.utils.ExtentReport;
+import com.qa.chirag.utils.Utilities;
 
 public class TestNGListener implements ITestListener {
 
@@ -68,6 +69,8 @@ public class TestNGListener implements ITestListener {
 
 	@Override
 	public void onStart(ITestContext context) {
+		Utilities.checkAndCreateFolder("./Reports");
+		Utilities.checkAndCreateFolder("./Screenshots");
 		extentReport = new ExtentReport();
 		extent = extentReport.initReport();
 	}
