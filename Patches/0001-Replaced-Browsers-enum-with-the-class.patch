@@ -1,0 +1,47 @@
+From 5402f7a556236c9657375b6173389d1a8e59ef49 Mon Sep 17 00:00:00 2001
+From: Chirag Mangukia <chirag.mangukia@gmail.com>
+Date: Tue, 24 May 2022 19:34:58 +0530
+Subject: [PATCH] Replaced Browsers enum with the class
+
+---
+ src/main/java/com/qa/chirag/factory/DriverFactory.java |  4 ++--
+ src/main/java/com/qa/chirag/utils/Browsers.java        | 10 ++++++++--
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/java/com/qa/chirag/factory/DriverFactory.java b/src/main/java/com/qa/chirag/factory/DriverFactory.java
+index a0c039c..2e5dc14 100644
+--- a/src/main/java/com/qa/chirag/factory/DriverFactory.java
++++ b/src/main/java/com/qa/chirag/factory/DriverFactory.java
+@@ -23,9 +23,9 @@ public class DriverFactory {
+ 		if (driver == null) {
+ 			optionsManager = new OptionsManager(prop);
+ 			String browser = prop.getProperty("browser").trim();
+-			if (browser.equalsIgnoreCase(Browsers.CHROME.toString())) {
++			if (browser.equalsIgnoreCase(Browsers.CHROME)) {
+ 				driver = WebDriverManager.chromedriver().capabilities(optionsManager.getChromeOptions()).create();
+-			} else if (browser.equalsIgnoreCase(Browsers.FIREFOX.toString())) {
++			} else if (browser.equalsIgnoreCase(Browsers.FIREFOX)) {
+ 				driver = WebDriverManager.firefoxdriver().capabilities(optionsManager.getFirefoxOptions()).create();
+ 			}
+ 		}
+diff --git a/src/main/java/com/qa/chirag/utils/Browsers.java b/src/main/java/com/qa/chirag/utils/Browsers.java
+index faad7a9..582d23c 100644
+--- a/src/main/java/com/qa/chirag/utils/Browsers.java
++++ b/src/main/java/com/qa/chirag/utils/Browsers.java
+@@ -1,5 +1,11 @@
+ package com.qa.chirag.utils;
+ 
+-public enum Browsers {
+-	CHROME, FIREFOX, EDGE;
++public class Browsers {
++	
++	public static final String CHROME = "Chrome";
++	
++	public static final String FIREFOX = "Firefox";
++	
++	public static final String EDGE = "Edge";
++
+ }
+-- 
+2.36.1.windows.1
+
