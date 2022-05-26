@@ -1,24 +1,30 @@
 package com.qa.chirag.base;
 
+import java.util.Properties;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
 import com.qa.chirag.factory.DriverFactory;
 import com.qa.chirag.pages.HomePage;
+import com.qa.chirag.pages.LoginPage;
 import com.qa.chirag.utils.Utilities;
 
 public class BaseTest {
 
 	DriverFactory df;
 	WebDriver driver;
+	protected Properties prop;
 
 	protected HomePage homePage;
+	protected LoginPage loginPage;
 
 	@BeforeTest
 	public void setup() {
 		df = new DriverFactory();
-		driver = df.initDriver(Utilities.getProp());
+		prop = Utilities.getProp();
+		driver = df.initDriver(prop);
 		homePage = new HomePage(driver);
 	}
 

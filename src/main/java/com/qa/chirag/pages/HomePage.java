@@ -7,7 +7,8 @@ public class HomePage {
 
 	private WebDriver driver;
 
-	private By searchBox = By.name("q");
+	private By myAccountDropdown = By.cssSelector("div#top-links ul li.dropdown");
+	private By loginLink = By.xpath("//div[@id=\"top-links\"]/ul/li[2]/ul/li[2]/a");
 
 	public HomePage(WebDriver driver) {
 		this.driver = driver;
@@ -20,9 +21,11 @@ public class HomePage {
 	public String getCurrentURL() {
 		return driver.getCurrentUrl();
 	}
-
-	public void doSearch(String query) {
-		driver.findElement(searchBox).sendKeys(query);
+	
+	public LoginPage goToLoginPage() {
+		driver.findElement(myAccountDropdown).click();
+		driver.findElement(loginLink).click();
+		return new LoginPage(driver);
 	}
 
 }

@@ -19,10 +19,11 @@ public class HomePageTest extends BaseTest {
 		String actualURL = homePage.getCurrentURL();
 		Assert.assertEquals(actualURL, Constants.HOME_PAGE_URL_FRACTION);
 	}
-
+	
 	@Test(priority = 3)
-	public void search() {
-		homePage.doSearch("Hello World");
+	public void checkTest() throws InterruptedException {
+		homePage.goToLoginPage();
+		Thread.sleep(5000);
 	}
 
 }
