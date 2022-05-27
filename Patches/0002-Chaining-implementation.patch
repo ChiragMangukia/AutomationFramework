@@ -1,0 +1,389 @@
+From 93e19d80e1d384485bc02642a7afabea33873f4b Mon Sep 17 00:00:00 2001
+From: Chirag Mangukia <chirag.mangukia@gmail.com>
+Date: Fri, 27 May 2022 19:40:45 +0530
+Subject: [PATCH 2/2] Chaining implementation
+
+---
+ ...0001-Opencart-project-implementation.patch | 190 ++++++++++++++++++
+ .../java/com/qa/chirag/pages/AccountPage.java |  29 +++
+ .../java/com/qa/chirag/pages/LoginPage.java   |   5 +-
+ .../java/com/qa/chirag/utils/Constants.java   |   1 +
+ .../java/com/qa/chirag/base/BaseTest.java     |   2 +
+ .../qa/chirag/testcases/AccountPageTest.java  |  34 ++++
+ .../com/qa/chirag/testcases/HomePageTest.java |   3 +-
+ .../qa/chirag/testcases/LoginPageTest.java    |   3 +-
+ src/test/resources/testrunners/testng.xml     |   2 +
+ 9 files changed, 264 insertions(+), 5 deletions(-)
+ create mode 100644 Patches/0001-Opencart-project-implementation.patch
+ create mode 100644 src/main/java/com/qa/chirag/pages/AccountPage.java
+ create mode 100644 src/test/java/com/qa/chirag/testcases/AccountPageTest.java
+
+diff --git a/Patches/0001-Opencart-project-implementation.patch b/Patches/0001-Opencart-project-implementation.patch
+new file mode 100644
+index 0000000..2782809
+--- /dev/null
++++ b/Patches/0001-Opencart-project-implementation.patch
+@@ -0,0 +1,190 @@
++From 88c0a4067a9f4b48479368e56b72bc06e177b3f6 Mon Sep 17 00:00:00 2001
++From: Chirag Mangukia <chirag.mangukia@gmail.com>
++Date: Thu, 26 May 2022 22:15:50 +0530
++Subject: [PATCH] Opencart project implementation
++
++---
++ .../java/com/qa/chirag/pages/HomePage.java    | 11 +++++---
++ .../java/com/qa/chirag/pages/LoginPage.java   | 27 +++++++++++++++++++
++ .../java/com/qa/chirag/utils/Constants.java   |  4 +--
++ .../java/com/qa/chirag/base/BaseTest.java     |  8 +++++-
++ .../com/qa/chirag/testcases/HomePageTest.java |  7 ++---
++ .../qa/chirag/testcases/LoginPageTest.java    | 21 +++++++++++++++
++ src/test/resources/config.properties          |  4 ++-
++ 7 files changed, 71 insertions(+), 11 deletions(-)
++ create mode 100644 src/main/java/com/qa/chirag/pages/LoginPage.java
++ create mode 100644 src/test/java/com/qa/chirag/testcases/LoginPageTest.java
++
++diff --git a/src/main/java/com/qa/chirag/pages/HomePage.java b/src/main/java/com/qa/chirag/pages/HomePage.java
++index 40fc75b..f810f4e 100644
++--- a/src/main/java/com/qa/chirag/pages/HomePage.java
+++++ b/src/main/java/com/qa/chirag/pages/HomePage.java
++@@ -7,7 +7,8 @@ public class HomePage {
++ 
++ 	private WebDriver driver;
++ 
++-	private By searchBox = By.name("q");
+++	private By myAccountDropdown = By.cssSelector("div#top-links ul li.dropdown");
+++	private By loginLink = By.xpath("//div[@id=\"top-links\"]/ul/li[2]/ul/li[2]/a");
++ 
++ 	public HomePage(WebDriver driver) {
++ 		this.driver = driver;
++@@ -20,9 +21,11 @@ public class HomePage {
++ 	public String getCurrentURL() {
++ 		return driver.getCurrentUrl();
++ 	}
++-
++-	public void doSearch(String query) {
++-		driver.findElement(searchBox).sendKeys(query);
+++	
+++	public LoginPage goToLoginPage() {
+++		driver.findElement(myAccountDropdown).click();
+++		driver.findElement(loginLink).click();
+++		return new LoginPage(driver);
++ 	}
++ 
++ }
++diff --git a/src/main/java/com/qa/chirag/pages/LoginPage.java b/src/main/java/com/qa/chirag/pages/LoginPage.java
++new file mode 100644
++index 0000000..4b009f2
++--- /dev/null
+++++ b/src/main/java/com/qa/chirag/pages/LoginPage.java
++@@ -0,0 +1,27 @@
+++package com.qa.chirag.pages;
+++
+++import org.openqa.selenium.By;
+++import org.openqa.selenium.WebDriver;
+++
+++public class LoginPage {
+++	
+++	private WebDriver driver;
+++	
+++	private By txtEmail = By.id("input-email");
+++	private By txtPassword = By.id("input-password");
+++	private By loginBtn = By.xpath("//*[@id=\"content\"]/div/div[2]/div/form/input");
+++
+++	public LoginPage(WebDriver driver) {
+++		this.driver = driver;
+++	}
+++	
+++	public void doLogin(String username, String password) {
+++		if(username != "" && password != "") {
+++			driver.findElement(txtEmail).sendKeys(username);
+++			driver.findElement(txtPassword).sendKeys(password);
+++			driver.findElement(loginBtn).click();
+++		}
+++	}
+++	
+++	
+++}
++diff --git a/src/main/java/com/qa/chirag/utils/Constants.java b/src/main/java/com/qa/chirag/utils/Constants.java
++index 4f02827..2d02c7b 100644
++--- a/src/main/java/com/qa/chirag/utils/Constants.java
+++++ b/src/main/java/com/qa/chirag/utils/Constants.java
++@@ -2,7 +2,7 @@ package com.qa.chirag.utils;
++ 
++ public class Constants {
++ 
++-	public static final String HOME_PAGE_TITLE = "Google";
++-	public static final String HOME_PAGE_URL_FRACTION = "www.google.com";
+++	public static final String HOME_PAGE_TITLE = "Your Store";
+++	public static final String HOME_PAGE_URL_FRACTION = "https://demo.opencart.com/index.php?route=common/home";
++ 
++ }
++diff --git a/src/test/java/com/qa/chirag/base/BaseTest.java b/src/test/java/com/qa/chirag/base/BaseTest.java
++index 433a354..d962535 100644
++--- a/src/test/java/com/qa/chirag/base/BaseTest.java
+++++ b/src/test/java/com/qa/chirag/base/BaseTest.java
++@@ -1,24 +1,30 @@
++ package com.qa.chirag.base;
++ 
+++import java.util.Properties;
+++
++ import org.openqa.selenium.WebDriver;
++ import org.testng.annotations.AfterTest;
++ import org.testng.annotations.BeforeTest;
++ 
++ import com.qa.chirag.factory.DriverFactory;
++ import com.qa.chirag.pages.HomePage;
+++import com.qa.chirag.pages.LoginPage;
++ import com.qa.chirag.utils.Utilities;
++ 
++ public class BaseTest {
++ 
++ 	DriverFactory df;
++ 	WebDriver driver;
+++	protected Properties prop;
++ 
++ 	protected HomePage homePage;
+++	protected LoginPage loginPage;
++ 
++ 	@BeforeTest
++ 	public void setup() {
++ 		df = new DriverFactory();
++-		driver = df.initDriver(Utilities.getProp());
+++		prop = Utilities.getProp();
+++		driver = df.initDriver(prop);
++ 		homePage = new HomePage(driver);
++ 	}
++ 
++diff --git a/src/test/java/com/qa/chirag/testcases/HomePageTest.java b/src/test/java/com/qa/chirag/testcases/HomePageTest.java
++index 0a1695c..f95ae7d 100644
++--- a/src/test/java/com/qa/chirag/testcases/HomePageTest.java
+++++ b/src/test/java/com/qa/chirag/testcases/HomePageTest.java
++@@ -19,10 +19,11 @@ public class HomePageTest extends BaseTest {
++ 		String actualURL = homePage.getCurrentURL();
++ 		Assert.assertEquals(actualURL, Constants.HOME_PAGE_URL_FRACTION);
++ 	}
++-
+++	
++ 	@Test(priority = 3)
++-	public void search() {
++-		homePage.doSearch("Hello World");
+++	public void checkTest() throws InterruptedException {
+++		homePage.goToLoginPage();
+++		Thread.sleep(5000);
++ 	}
++ 
++ }
++diff --git a/src/test/java/com/qa/chirag/testcases/LoginPageTest.java b/src/test/java/com/qa/chirag/testcases/LoginPageTest.java
++new file mode 100644
++index 0000000..5072650
++--- /dev/null
+++++ b/src/test/java/com/qa/chirag/testcases/LoginPageTest.java
++@@ -0,0 +1,21 @@
+++package com.qa.chirag.testcases;
+++
+++import org.testng.annotations.BeforeClass;
+++import org.testng.annotations.Test;
+++
+++import com.qa.chirag.base.BaseTest;
+++
+++public class LoginPageTest extends BaseTest {
+++	
+++	@BeforeClass
+++	public void loginPageSetup() {
+++		loginPage = homePage.goToLoginPage();
+++	}
+++	
+++	@Test
+++	public void loginTest() throws InterruptedException {
+++		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
+++		Thread.sleep(5000);
+++	}
+++	
+++}
++diff --git a/src/test/resources/config.properties b/src/test/resources/config.properties
++index 404d829..26d35dc 100644
++--- a/src/test/resources/config.properties
+++++ b/src/test/resources/config.properties
++@@ -1,2 +1,4 @@
++ browser = chrome
++-url = https:www.google.com
++\ No newline at end of file
+++url = https://demo.opencart.com/index.php?route=common/home
+++username = xilobe5964@pidhoes.com
+++password = Automation@123
++\ No newline at end of file
++-- 
++2.36.1.windows.1
++
+diff --git a/src/main/java/com/qa/chirag/pages/AccountPage.java b/src/main/java/com/qa/chirag/pages/AccountPage.java
+new file mode 100644
+index 0000000..1bb0cff
+--- /dev/null
++++ b/src/main/java/com/qa/chirag/pages/AccountPage.java
+@@ -0,0 +1,29 @@
++package com.qa.chirag.pages;
++
++import org.openqa.selenium.By;
++import org.openqa.selenium.WebDriver;
++
++public class AccountPage {
++	
++	WebDriver driver;
++	
++	private By editAcInfoLink = By.xpath("//*[@id=\"content\"]/ul[1]/li[1]/a");
++	private By changePswdLink = By.xpath("//*[@id=\"content\"]/ul[1]/li[2]/a");
++	
++	public AccountPage(WebDriver driver) {
++		this.driver = driver;
++	}
++	
++	public void openEditAcInfo() {
++		driver.findElement(editAcInfoLink).click();
++	}
++	
++	public void navigateBack() {
++		driver.navigate().back();
++	}
++	
++	public void openChangePswd() {
++		driver.findElement(changePswdLink).click();
++	}
++
++}
+diff --git a/src/main/java/com/qa/chirag/pages/LoginPage.java b/src/main/java/com/qa/chirag/pages/LoginPage.java
+index 4b009f2..4ec9ec9 100644
+--- a/src/main/java/com/qa/chirag/pages/LoginPage.java
++++ b/src/main/java/com/qa/chirag/pages/LoginPage.java
+@@ -15,11 +15,14 @@ public class LoginPage {
+ 		this.driver = driver;
+ 	}
+ 	
+-	public void doLogin(String username, String password) {
++	public AccountPage doLogin(String username, String password) {
+ 		if(username != "" && password != "") {
+ 			driver.findElement(txtEmail).sendKeys(username);
+ 			driver.findElement(txtPassword).sendKeys(password);
+ 			driver.findElement(loginBtn).click();
++			return new AccountPage(driver);
++		} else {
++			return null;
+ 		}
+ 	}
+ 	
+diff --git a/src/main/java/com/qa/chirag/utils/Constants.java b/src/main/java/com/qa/chirag/utils/Constants.java
+index 2d02c7b..b85a437 100644
+--- a/src/main/java/com/qa/chirag/utils/Constants.java
++++ b/src/main/java/com/qa/chirag/utils/Constants.java
+@@ -4,5 +4,6 @@ public class Constants {
+ 
+ 	public static final String HOME_PAGE_TITLE = "Your Store";
+ 	public static final String HOME_PAGE_URL_FRACTION = "https://demo.opencart.com/index.php?route=common/home";
++	public static final String Account_PAGE_TITLE = "My Account";
+ 
+ }
+diff --git a/src/test/java/com/qa/chirag/base/BaseTest.java b/src/test/java/com/qa/chirag/base/BaseTest.java
+index d962535..7d83408 100644
+--- a/src/test/java/com/qa/chirag/base/BaseTest.java
++++ b/src/test/java/com/qa/chirag/base/BaseTest.java
+@@ -7,6 +7,7 @@ import org.testng.annotations.AfterTest;
+ import org.testng.annotations.BeforeTest;
+ 
+ import com.qa.chirag.factory.DriverFactory;
++import com.qa.chirag.pages.AccountPage;
+ import com.qa.chirag.pages.HomePage;
+ import com.qa.chirag.pages.LoginPage;
+ import com.qa.chirag.utils.Utilities;
+@@ -19,6 +20,7 @@ public class BaseTest {
+ 
+ 	protected HomePage homePage;
+ 	protected LoginPage loginPage;
++	protected AccountPage accountPage;
+ 
+ 	@BeforeTest
+ 	public void setup() {
+diff --git a/src/test/java/com/qa/chirag/testcases/AccountPageTest.java b/src/test/java/com/qa/chirag/testcases/AccountPageTest.java
+new file mode 100644
+index 0000000..4a17376
+--- /dev/null
++++ b/src/test/java/com/qa/chirag/testcases/AccountPageTest.java
+@@ -0,0 +1,34 @@
++package com.qa.chirag.testcases;
++
++import org.testng.Assert;
++import org.testng.annotations.BeforeClass;
++import org.testng.annotations.Test;
++
++import com.qa.chirag.base.BaseTest;
++
++public class AccountPageTest extends BaseTest {
++	
++	@BeforeClass
++	public void accountPageSetup() {
++		loginPage = homePage.goToLoginPage();
++		accountPage = loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
++	}
++	
++	@Test(priority = 1)
++	public void editAcInfo() {
++		accountPage.openEditAcInfo();
++		Assert.assertTrue(true);
++	}
++	
++	@Test(priority = 2)
++	public void goBack() {
++		accountPage.navigateBack();
++	}
++	
++	@Test(priority = 3)
++	public void passwordChange() {
++		accountPage.openChangePswd();
++		Assert.assertTrue(true);
++	}
++
++}
+diff --git a/src/test/java/com/qa/chirag/testcases/HomePageTest.java b/src/test/java/com/qa/chirag/testcases/HomePageTest.java
+index f95ae7d..2c84ddd 100644
+--- a/src/test/java/com/qa/chirag/testcases/HomePageTest.java
++++ b/src/test/java/com/qa/chirag/testcases/HomePageTest.java
+@@ -21,9 +21,8 @@ public class HomePageTest extends BaseTest {
+ 	}
+ 	
+ 	@Test(priority = 3)
+-	public void checkTest() throws InterruptedException {
++	public void checkTest() {
+ 		homePage.goToLoginPage();
+-		Thread.sleep(5000);
+ 	}
+ 
+ }
+diff --git a/src/test/java/com/qa/chirag/testcases/LoginPageTest.java b/src/test/java/com/qa/chirag/testcases/LoginPageTest.java
+index 5072650..3a17306 100644
+--- a/src/test/java/com/qa/chirag/testcases/LoginPageTest.java
++++ b/src/test/java/com/qa/chirag/testcases/LoginPageTest.java
+@@ -13,9 +13,8 @@ public class LoginPageTest extends BaseTest {
+ 	}
+ 	
+ 	@Test
+-	public void loginTest() throws InterruptedException {
++	public void loginTest() {
+ 		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
+-		Thread.sleep(5000);
+ 	}
+ 	
+ }
+diff --git a/src/test/resources/testrunners/testng.xml b/src/test/resources/testrunners/testng.xml
+index 3881446..c7fcbab 100644
+--- a/src/test/resources/testrunners/testng.xml
++++ b/src/test/resources/testrunners/testng.xml
+@@ -7,6 +7,8 @@
+   <test name="Test">
+     <classes>
+       <class name="com.qa.chirag.testcases.HomePageTest"/>
++      <class name="com.qa.chirag.testcases.LoginPageTest"/>
++      <class name="com.qa.chirag.testcases.AccountPageTest"/>
+     </classes>
+   </test> <!-- Test -->
+ </suite> <!-- Suite -->
+\ No newline at end of file
+-- 
+2.36.1.windows.1
+

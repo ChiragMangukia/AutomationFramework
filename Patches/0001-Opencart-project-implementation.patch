@@ -1,7 +1,7 @@
 From 88c0a4067a9f4b48479368e56b72bc06e177b3f6 Mon Sep 17 00:00:00 2001
 From: Chirag Mangukia <chirag.mangukia@gmail.com>
 Date: Thu, 26 May 2022 22:15:50 +0530
-Subject: [PATCH] Opencart project implementation
+Subject: [PATCH 1/2] Opencart project implementation
 
 ---
  .../java/com/qa/chirag/pages/HomePage.java    | 11 +++++---
