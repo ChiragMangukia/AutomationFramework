@@ -10,7 +10,7 @@ public class Utilities {
 
 	public static Properties getProp() {
 		Properties prop = new Properties();
-		String path = "./src/test/resources/config.properties";
+		String path = "./src/test/resources/config/config.properties";
 
 		FileInputStream ip;
 		try {
