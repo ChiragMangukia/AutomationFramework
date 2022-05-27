@@ -7,6 +7,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
 import com.qa.chirag.factory.DriverFactory;
+import com.qa.chirag.pages.AccountPage;
 import com.qa.chirag.pages.HomePage;
 import com.qa.chirag.pages.LoginPage;
 import com.qa.chirag.utils.Utilities;
@@ -19,6 +20,7 @@ public class BaseTest {
 
 	protected HomePage homePage;
 	protected LoginPage loginPage;
+	protected AccountPage accountPage;
 
 	@BeforeTest
 	public void setup() {

@@ -13,9 +13,8 @@ public class LoginPageTest extends BaseTest {
 	}
 	
 	@Test
-	public void loginTest() throws InterruptedException {
+	public void loginTest() {
 		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
-		Thread.sleep(5000);
 	}
 	
 }

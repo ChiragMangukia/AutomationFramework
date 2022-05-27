@@ -15,11 +15,14 @@ public class LoginPage {
 		this.driver = driver;
 	}
 	
-	public void doLogin(String username, String password) {
+	public AccountPage doLogin(String username, String password) {
 		if(username != "" && password != "") {
 			driver.findElement(txtEmail).sendKeys(username);
 			driver.findElement(txtPassword).sendKeys(password);
 			driver.findElement(loginBtn).click();
+			return new AccountPage(driver);
+		} else {
+			return null;
 		}
 	}
 	

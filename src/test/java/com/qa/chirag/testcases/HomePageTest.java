@@ -21,9 +21,8 @@ public class HomePageTest extends BaseTest {
 	}
 	
 	@Test(priority = 3)
-	public void checkTest() throws InterruptedException {
+	public void checkTest() {
 		homePage.goToLoginPage();
-		Thread.sleep(5000);
 	}
 
 }
