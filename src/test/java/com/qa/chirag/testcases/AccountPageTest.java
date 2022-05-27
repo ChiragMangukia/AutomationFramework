@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.qa.chirag.base.BaseTest;
+import com.qa.chirag.utils.Constants;
 
 public class AccountPageTest extends BaseTest {
 	
@@ -14,21 +15,25 @@ public class AccountPageTest extends BaseTest {
 		accountPage = loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
 	}
 	
+	
 	@Test(priority = 1)
-	public void editAcInfo() {
-		accountPage.openEditAcInfo();
-		Assert.assertTrue(true);
+	public void editAccountDetails() {
+		editAccountInfoPage = accountPage.openEditAcInfoPage();
+		accountPage = editAccountInfoPage.editInfo(prop.getProperty("firstname"),
+														prop.getProperty("lastname"), 
+															prop.getProperty("username"),
+																prop.getProperty("phone"));
+		Assert.assertEquals(accountPage.getSuccessMsg(), Constants.ACCOUNT_PAGE_SUCCESS_MSG);
 	}
 	
 	@Test(priority = 2)
-	public void goBack() {
-		accountPage.navigateBack();
+	public void goToHomePage() {
+		commonsPage.clickLogo();
 	}
 	
 	@Test(priority = 3)
-	public void passwordChange() {
-		accountPage.openChangePswd();
-		Assert.assertTrue(true);
+	public void logoutTest() {
+		commonsPage.doLogout();
 	}
 
 }

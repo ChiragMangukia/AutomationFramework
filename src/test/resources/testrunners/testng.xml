@@ -6,8 +6,6 @@
 	</listeners>
   <test name="Test">
     <classes>
-      <class name="com.qa.chirag.testcases.HomePageTest"/>
-      <class name="com.qa.chirag.testcases.LoginPageTest"/>
       <class name="com.qa.chirag.testcases.AccountPageTest"/>
     </classes>
   </test> <!-- Test -->

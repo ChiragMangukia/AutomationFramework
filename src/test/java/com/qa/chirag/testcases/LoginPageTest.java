@@ -1,5 +1,6 @@
 package com.qa.chirag.testcases;
 
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -15,6 +16,7 @@ public class LoginPageTest extends BaseTest {
 	@Test
 	public void loginTest() {
 		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
+		Assert.assertTrue(true);
 	}
 	
 }

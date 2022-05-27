@@ -19,10 +19,5 @@ public class HomePageTest extends BaseTest {
 		String actualURL = homePage.getCurrentURL();
 		Assert.assertEquals(actualURL, Constants.HOME_PAGE_URL_FRACTION);
 	}
-	
-	@Test(priority = 3)
-	public void checkTest() {
-		homePage.goToLoginPage();
-	}
 
 }
