@@ -27,9 +27,9 @@ public class OptionsManager {
 	public FirefoxOptions getFirefoxOptions() {
 		firefox = new FirefoxOptions();
 		if (Boolean.parseBoolean(prop.getProperty("headless")))
-			chrome.addArguments("--headless");
+			firefox.addArguments("--headless");
 		if (Boolean.parseBoolean(prop.getProperty("incognito")))
-			chrome.addArguments("--incognito");
+			firefox.addArguments("--incognito");
 		return firefox;
 	}
 
