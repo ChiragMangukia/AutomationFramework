@@ -4,9 +4,12 @@
 	<listeners>
 		<listener class-name="com.qa.chirag.listeners.TestNGListener" />
 	</listeners>
-  <test name="Test">
+  <test thread-count="5" name="Test">
     <classes>
-      <class name="com.qa.chirag.testcases.AccountPageTest"/>
+    	<class name="com.qa.chirag.testcases.HomePageTest"/>
+    	<class name="com.qa.chirag.testcases.LoginPageTest"/>
+    	<class name="com.qa.chirag.testcases.DesktopsPageTest"/>
+      	<class name="com.qa.chirag.testcases.AccountPageTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
