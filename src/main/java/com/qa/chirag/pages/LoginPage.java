@@ -3,6 +3,8 @@ package com.qa.chirag.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import com.qa.chirag.utils.Constants;
+
 public class LoginPage {
 	
 	private WebDriver driver;
@@ -15,15 +17,19 @@ public class LoginPage {
 		this.driver = driver;
 	}
 	
+	public String getLoginPageTitle() {
+		return driver.getTitle();
+	}
+	
 	public AccountPage doLogin(String username, String password) {
-		if(username != "" && password != "") {
-			driver.findElement(txtEmail).sendKeys(username);
-			driver.findElement(txtPassword).sendKeys(password);
-			driver.findElement(loginBtn).click();
-			return new AccountPage(driver);
-		} else {
-			return null;
+		if(getLoginPageTitle().contains(Constants.LOGIN_PAGE_TITLE)) {
+			if(username != "" && password != "") {
+				driver.findElement(txtEmail).sendKeys(username);
+				driver.findElement(txtPassword).sendKeys(password);
+				driver.findElement(loginBtn).click();
+			}
 		}
+		return new AccountPage(driver);
 	}
 	
 	

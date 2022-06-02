@@ -4,8 +4,6 @@ import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-
 import com.qa.chirag.factory.DriverFactory;
 import com.qa.chirag.pages.AccountPage;
 import com.qa.chirag.pages.CommonsPage;
@@ -30,8 +28,7 @@ public class BaseTest {
 	protected DesktopsPage desktopsPage;
 	protected EditAccountInfoPage editAccountInfoPage;
 
-	@BeforeTest
-	public void setup() {
+	public BaseTest() {
 		df = new DriverFactory();
 		prop = Utilities.getProp();
 		driver = df.initDriver(prop);

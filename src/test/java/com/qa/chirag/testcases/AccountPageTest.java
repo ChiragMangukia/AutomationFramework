@@ -18,8 +18,9 @@ public class AccountPageTest extends BaseTest {
 	
 	@Test(priority = 1)
 	public void editAccountDetails() {
+		accountPage = commonsPage.goToMyAccount();
 		editAccountInfoPage = accountPage.openEditAcInfoPage();
-		accountPage = editAccountInfoPage.editInfo(prop.getProperty("firstname"),
+		editAccountInfoPage.editInfo(prop.getProperty("firstname"),
 														prop.getProperty("lastname"), 
 															prop.getProperty("username"),
 																prop.getProperty("phone"));

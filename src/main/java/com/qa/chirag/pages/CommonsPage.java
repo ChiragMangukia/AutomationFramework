@@ -2,15 +2,17 @@ package com.qa.chirag.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class CommonsPage {
 	
 	WebDriver driver;
 	
-	private By logo = By.cssSelector("div#logo h1 a");
+	private By logo = By.cssSelector("div#logo a img");
 	
 	private By myAccountDropdown = By.xpath("//li[@class='dropdown']/a/span[text()='My Account']");
 	
+	private By loginLink = selectOptionFromMyAccountDropdown("Login");
 	private By myAccountLink = selectOptionFromMyAccountDropdown("My Account");
 	private By orderHistoryLink = selectOptionFromMyAccountDropdown("Order History");
 	private By transactionsLink = selectOptionFromMyAccountDropdown("Transactions");
@@ -24,23 +26,46 @@ public class CommonsPage {
 		this.driver = driver;
 	}
 	
-	private static By selectOptionFromMyAccountDropdown(String option) {
+	private By selectOptionFromMyAccountDropdown(String option) {
 		return By.xpath("//div[@id='top-links']/ul/li[2]/ul/li/a[text()='" + option +"']");
+	}
+	
+	private void clickMyAccountDropdown() {
+		clickLogo();
+		driver.findElement(myAccountDropdown).click();
+	} 
+	
+	public AccountPage goToMyAccount() {
+		clickMyAccountDropdown();
+		driver.findElement(myAccountLink).click();
+		return new AccountPage(driver);
+	}
+	
+	public void goToOrderHistory() {
+		clickMyAccountDropdown();
+		driver.findElement(orderHistoryLink).click();
+		//return new AccountPage(driver);
+	}
+	
+	public void goToTransactions() {
+		clickMyAccountDropdown();
+		driver.findElement(transactionsLink).click();
+		//return new AccountPage(driver);
+	}
+	
+	public void goToDownloads() {
+		clickMyAccountDropdown();
+		driver.findElement(downloadsLink).click();
+	}
+	
+	public void doLogout() {
+		clickMyAccountDropdown();
+		driver.findElement(logoutLink).click();
 	}
 	
 	public HomePage clickLogo() {
 		driver.findElement(logo).click();
 		return new HomePage(driver);
-	}
-	
-	public void doLogout() {
-		driver.findElement(myAccountDropdown).click();
-		driver.findElement(logoutLink).click();
-	}
-	
-	public void goToDownloads() {
-		driver.findElement(myAccountDropdown).click();
-		driver.findElement(downloadsLink).click();
 	}
 	
 	private void clickDesktop() {
