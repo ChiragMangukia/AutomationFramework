@@ -32,5 +32,4 @@ public class OptionsManager {
 			firefox.addArguments("--incognito");
 		return firefox;
 	}
-
 }

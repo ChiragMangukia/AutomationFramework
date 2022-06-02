@@ -20,9 +20,4 @@ public class HomePageTest extends BaseTest {
 		Assert.assertEquals(actualURL, Constants.HOME_PAGE_URL_FRACTION);
 	}
 
-	@Test(priority = 3)
-	public void search() {
-		homePage.doSearch("Hello World");
-	}
-
 }
