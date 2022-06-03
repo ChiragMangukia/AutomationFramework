@@ -11,7 +11,6 @@ public class DesktopsPageTest extends BaseTest {
 
 	@BeforeClass
 	public void desktopsPageSetup() {
-		loginPage = homePage.goToLoginPage();
 		accountPage = loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
 		desktopsPage = commonsPage.goToDesktopsPage();
 	}
