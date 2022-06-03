@@ -22,8 +22,6 @@ public class LoginPage {
 	}
 
 	public AccountPage doLogin(String username, String password) {
-		CommonsPage commonsPage = new CommonsPage(driver);
-		commonsPage.goToLogin();
 		if (getLoginPageTitle().contains(Constants.LOGIN_PAGE_TITLE)) {
 			if (username != "" && password != "") {
 				driver.findElement(txtEmail).sendKeys(username);

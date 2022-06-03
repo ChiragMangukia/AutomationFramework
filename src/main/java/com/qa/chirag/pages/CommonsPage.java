@@ -1,7 +1,6 @@
 package com.qa.chirag.pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 
 public class CommonsPage {
@@ -33,16 +32,6 @@ public class CommonsPage {
 	private void clickMyAccountDropdown() {
 		clickLogo();
 		driver.findElement(myAccountDropdown).click();
-	}
-
-	public LoginPage goToLogin() {
-		clickMyAccountDropdown();
-		try {
-			driver.findElement(loginLink).click();
-		} catch (NoSuchElementException e) {
-			return new LoginPage(driver);
-		}
-		return new LoginPage(driver);
 	}
 
 	public AccountPage goToMyAccount() {

@@ -4,7 +4,6 @@ import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
-
 import com.qa.chirag.factory.DriverFactory;
 import com.qa.chirag.pages.AccountPage;
 import com.qa.chirag.pages.CommonsPage;
@@ -35,7 +34,6 @@ public class BaseTest {
 		driver = df.initDriver(prop);
 		homePage = new HomePage(driver);
 		commonsPage = new CommonsPage(driver);
-		loginPage = new LoginPage(driver);
 	}
 
 	@AfterTest

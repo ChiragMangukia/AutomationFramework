@@ -1,0 +1,139 @@
+From 7d1251c0333ff9834632b1c7ae300410da4a8753 Mon Sep 17 00:00:00 2001
+From: Chirag Mangukia <chirag.mangukia@gmail.com>
+Date: Fri, 3 Jun 2022 22:32:03 +0530
+Subject: [PATCH] Enhanced Login method
+
+---
+ src/main/java/com/qa/chirag/pages/CommonsPage.java    | 11 +++++++++++
+ src/main/java/com/qa/chirag/pages/LoginPage.java      |  2 ++
+ src/test/java/com/qa/chirag/base/BaseTest.java        |  2 ++
+ .../java/com/qa/chirag/testcases/AccountPageTest.java |  1 -
+ .../com/qa/chirag/testcases/DesktopsPageTest.java     |  1 -
+ .../java/com/qa/chirag/testcases/LoginPageTest.java   |  6 ------
+ src/test/resources/testrunners/testng.xml             |  1 -
+ 7 files changed, 15 insertions(+), 9 deletions(-)
+
+diff --git a/src/main/java/com/qa/chirag/pages/CommonsPage.java b/src/main/java/com/qa/chirag/pages/CommonsPage.java
+index 8d1152e..c08a508 100644
+--- a/src/main/java/com/qa/chirag/pages/CommonsPage.java
++++ b/src/main/java/com/qa/chirag/pages/CommonsPage.java
+@@ -1,6 +1,7 @@
+ package com.qa.chirag.pages;
+ 
+ import org.openqa.selenium.By;
++import org.openqa.selenium.NoSuchElementException;
+ import org.openqa.selenium.WebDriver;
+ 
+ public class CommonsPage {
+@@ -34,6 +35,16 @@ public class CommonsPage {
+ 		driver.findElement(myAccountDropdown).click();
+ 	}
+ 
++	public LoginPage goToLogin() {
++		clickMyAccountDropdown();
++		try {
++			driver.findElement(loginLink).click();
++		} catch (NoSuchElementException e) {
++			return new LoginPage(driver);
++		}
++		return new LoginPage(driver);
++	}
++
+ 	public AccountPage goToMyAccount() {
+ 		clickMyAccountDropdown();
+ 		driver.findElement(myAccountLink).click();
+diff --git a/src/main/java/com/qa/chirag/pages/LoginPage.java b/src/main/java/com/qa/chirag/pages/LoginPage.java
+index 9b6eb90..529512d 100644
+--- a/src/main/java/com/qa/chirag/pages/LoginPage.java
++++ b/src/main/java/com/qa/chirag/pages/LoginPage.java
+@@ -22,6 +22,8 @@ public class LoginPage {
+ 	}
+ 
+ 	public AccountPage doLogin(String username, String password) {
++		CommonsPage commonsPage = new CommonsPage(driver);
++		commonsPage.goToLogin();
+ 		if (getLoginPageTitle().contains(Constants.LOGIN_PAGE_TITLE)) {
+ 			if (username != "" && password != "") {
+ 				driver.findElement(txtEmail).sendKeys(username);
+diff --git a/src/test/java/com/qa/chirag/base/BaseTest.java b/src/test/java/com/qa/chirag/base/BaseTest.java
+index a708858..769d810 100644
+--- a/src/test/java/com/qa/chirag/base/BaseTest.java
++++ b/src/test/java/com/qa/chirag/base/BaseTest.java
+@@ -4,6 +4,7 @@ import java.util.Properties;
+ 
+ import org.openqa.selenium.WebDriver;
+ import org.testng.annotations.AfterTest;
++
+ import com.qa.chirag.factory.DriverFactory;
+ import com.qa.chirag.pages.AccountPage;
+ import com.qa.chirag.pages.CommonsPage;
+@@ -34,6 +35,7 @@ public class BaseTest {
+ 		driver = df.initDriver(prop);
+ 		homePage = new HomePage(driver);
+ 		commonsPage = new CommonsPage(driver);
++		loginPage = new LoginPage(driver);
+ 	}
+ 
+ 	@AfterTest
+diff --git a/src/test/java/com/qa/chirag/testcases/AccountPageTest.java b/src/test/java/com/qa/chirag/testcases/AccountPageTest.java
+index 774b7f2..309c26b 100644
+--- a/src/test/java/com/qa/chirag/testcases/AccountPageTest.java
++++ b/src/test/java/com/qa/chirag/testcases/AccountPageTest.java
+@@ -11,7 +11,6 @@ public class AccountPageTest extends BaseTest {
+ 
+ 	@BeforeClass
+ 	public void accountPageSetup() {
+-		loginPage = homePage.goToLoginPage();
+ 		accountPage = loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
+ 	}
+ 
+diff --git a/src/test/java/com/qa/chirag/testcases/DesktopsPageTest.java b/src/test/java/com/qa/chirag/testcases/DesktopsPageTest.java
+index 63310db..aabd847 100644
+--- a/src/test/java/com/qa/chirag/testcases/DesktopsPageTest.java
++++ b/src/test/java/com/qa/chirag/testcases/DesktopsPageTest.java
+@@ -11,7 +11,6 @@ public class DesktopsPageTest extends BaseTest {
+ 
+ 	@BeforeClass
+ 	public void desktopsPageSetup() {
+-		loginPage = homePage.goToLoginPage();
+ 		accountPage = loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
+ 		desktopsPage = commonsPage.goToDesktopsPage();
+ 	}
+diff --git a/src/test/java/com/qa/chirag/testcases/LoginPageTest.java b/src/test/java/com/qa/chirag/testcases/LoginPageTest.java
+index 1f49987..bf7bd05 100644
+--- a/src/test/java/com/qa/chirag/testcases/LoginPageTest.java
++++ b/src/test/java/com/qa/chirag/testcases/LoginPageTest.java
+@@ -1,18 +1,12 @@
+ package com.qa.chirag.testcases;
+ 
+ import org.testng.Assert;
+-import org.testng.annotations.BeforeClass;
+ import org.testng.annotations.Test;
+ 
+ import com.qa.chirag.base.BaseTest;
+ 
+ public class LoginPageTest extends BaseTest {
+ 
+-	@BeforeClass
+-	public void loginPageSetup() {
+-		loginPage = homePage.goToLoginPage();
+-	}
+-
+ 	@Test
+ 	public void loginTest() {
+ 		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
+diff --git a/src/test/resources/testrunners/testng.xml b/src/test/resources/testrunners/testng.xml
+index 1d571a9..0f67c23 100644
+--- a/src/test/resources/testrunners/testng.xml
++++ b/src/test/resources/testrunners/testng.xml
+@@ -6,7 +6,6 @@
+ 	</listeners>
+   <test name="Test">
+     <classes>
+-    	
+     	<class name="com.qa.chirag.testcases.HomePageTest"/>
+     	<class name="com.qa.chirag.testcases.LoginPageTest"/>
+     	<class name="com.qa.chirag.testcases.DesktopsPageTest"/>
+-- 
+2.36.1.windows.1
+
