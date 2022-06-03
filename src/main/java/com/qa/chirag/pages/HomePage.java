@@ -22,11 +22,11 @@ public class HomePage {
 	public String getCurrentURL() {
 		return driver.getCurrentUrl();
 	}
-	
+
 	public LoginPage goToLoginPage() {
 		driver.findElement(myAccountDropdown).click();
 		WebElement login = driver.findElement(loginLink);
-		if(login.getText().equals("Login")) {
+		if (login.getText().equals("Login")) {
 			login.click();
 		}
 		return new LoginPage(driver);

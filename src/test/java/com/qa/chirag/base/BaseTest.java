@@ -16,7 +16,7 @@ import com.qa.chirag.utils.Utilities;
 public class BaseTest {
 
 	WebDriver driver;
-	
+
 	DriverFactory df;
 
 	protected Properties prop;
