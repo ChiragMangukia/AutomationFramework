@@ -1,0 +1,374 @@
+From 40a8b5fea85f09477c632a052198d15a4ec1bb23 Mon Sep 17 00:00:00 2001
+From: Chirag Mangukia <chirag.mangukia@gmail.com>
+Date: Sat, 4 Jun 2022 22:15:12 +0530
+Subject: [PATCH] Added more Test Classes and Functionalities
+
+---
+ .../java/com/qa/chirag/pages/BrandPage.java   | 30 ++++++++++++++++
+ .../com/qa/chirag/pages/DesktopsPage.java     | 32 +++++++++++++----
+ .../java/com/qa/chirag/pages/ProductPage.java | 35 +++++++++++++++++++
+ .../java/com/qa/chirag/utils/ElementUtil.java | 34 ++++++++++++++++--
+ .../java/com/qa/chirag/base/BaseTest.java     |  4 +++
+ .../qa/chirag/testcases/BrandPageTest.java    | 28 +++++++++++++++
+ .../qa/chirag/testcases/DesktopsPageTest.java | 15 ++++++--
+ .../qa/chirag/testcases/ProductPageTest.java  | 22 ++++++++++++
+ src/test/resources/testrunners/testng.xml     |  2 ++
+ 9 files changed, 189 insertions(+), 13 deletions(-)
+ create mode 100644 src/main/java/com/qa/chirag/pages/BrandPage.java
+ create mode 100644 src/main/java/com/qa/chirag/pages/ProductPage.java
+ create mode 100644 src/test/java/com/qa/chirag/testcases/BrandPageTest.java
+ create mode 100644 src/test/java/com/qa/chirag/testcases/ProductPageTest.java
+
+diff --git a/src/main/java/com/qa/chirag/pages/BrandPage.java b/src/main/java/com/qa/chirag/pages/BrandPage.java
+new file mode 100644
+index 0000000..20234bd
+--- /dev/null
++++ b/src/main/java/com/qa/chirag/pages/BrandPage.java
+@@ -0,0 +1,30 @@
++package com.qa.chirag.pages;
++
++import org.openqa.selenium.By;
++import org.openqa.selenium.WebDriver;
++
++import com.qa.chirag.utils.ElementUtil;
++
++public class BrandPage {
++	
++	WebDriver driver;
++	ElementUtil elementUtil;
++	
++	private By breadcrumb = By.cssSelector("ul.breadcrumb");
++	private By brandName = By.cssSelector("div#content h2");
++	
++	public BrandPage(WebDriver driver) {
++		this.driver = driver;
++		elementUtil = new ElementUtil(driver);
++		elementUtil.doScroll(breadcrumb);
++	}
++	
++	public String getTitle() {
++		return elementUtil.doGetTitle();
++	}
++	
++	public String getBrandName() {
++		return elementUtil.doGetText(brandName);
++	}
++	
++}
+diff --git a/src/main/java/com/qa/chirag/pages/DesktopsPage.java b/src/main/java/com/qa/chirag/pages/DesktopsPage.java
+index ef9428b..0bbb146 100644
+--- a/src/main/java/com/qa/chirag/pages/DesktopsPage.java
++++ b/src/main/java/com/qa/chirag/pages/DesktopsPage.java
+@@ -1,12 +1,9 @@
+ package com.qa.chirag.pages;
+ 
+-import java.util.ArrayList;
+ import java.util.List;
+ 
+ import org.openqa.selenium.By;
+ import org.openqa.selenium.WebDriver;
+-import org.openqa.selenium.WebElement;
+-
+ import com.qa.chirag.utils.ElementUtil;
+ 
+ public class DesktopsPage {
+@@ -15,6 +12,8 @@ public class DesktopsPage {
+ 
+ 	private ElementUtil elementUtil;
+ 
++	private By labelRefineSearch = By.cssSelector("div#content h3");
++	private By dropdownShow = By.cssSelector("select#input-limit");
+ 	private By listedProducts = By.xpath("//div[@id='content']/div[4]/div");
+ 
+ 	public DesktopsPage(WebDriver driver) {
+@@ -22,6 +21,10 @@ public class DesktopsPage {
+ 		elementUtil = new ElementUtil(driver);
+ 	}
+ 
++	private By getProductLink(String product) {
++		return By.partialLinkText(product);
++	}
++
+ 	public String getPageTitle() {
+ 		return elementUtil.doGetTitle();
+ 	}
+@@ -31,11 +34,26 @@ public class DesktopsPage {
+ 	}
+ 
+ 	public List<String> getProductsList() {
+-		List<String> products = new ArrayList<String>();
+-		for (WebElement e : elementUtil.doGetElements(listedProducts)) {
+-			products.add(e.getText());
++		return elementUtil.doGetTextListFromWebElements(listedProducts);
++	}
++
++	public void selectFromShowDropdown(int numberOfProductsToDisplay) {
++		elementUtil.doScroll(labelRefineSearch);
++		elementUtil.doSelectDropdownByVisibleText(dropdownShow, Integer.toString(numberOfProductsToDisplay));
++	}
++
++	public ProductPage selectProduct(String product) {
++		if (elementUtil.checkIfElementIsPresent(getProductLink(product))) {
++			elementUtil.doClick(getProductLink(product));
+ 		}
+-		return products;
++		return new ProductPage(driver);
+ 	}
+ 
++	public ProductPage selectProduct(String product, int productCountFromDropdown) {
++		selectFromShowDropdown(productCountFromDropdown);
++		if (elementUtil.checkIfElementIsPresent(getProductLink(product))) {
++			elementUtil.doClick(getProductLink(product));
++		}
++		return new ProductPage(driver);
++	}
+ }
+diff --git a/src/main/java/com/qa/chirag/pages/ProductPage.java b/src/main/java/com/qa/chirag/pages/ProductPage.java
+new file mode 100644
+index 0000000..6067902
+--- /dev/null
++++ b/src/main/java/com/qa/chirag/pages/ProductPage.java
+@@ -0,0 +1,35 @@
++package com.qa.chirag.pages;
++
++import org.openqa.selenium.By;
++import org.openqa.selenium.WebDriver;
++
++import com.qa.chirag.utils.ElementUtil;
++
++public class ProductPage {
++	
++	WebDriver driver;
++	ElementUtil elementUtil;
++	
++	private By breadcrumb = By.cssSelector("ul.breadcrumb");
++	private By productName = By.cssSelector("div#content h1");
++	private By brandName = By.cssSelector("div#content ul.list-unstyled a");
++	
++	public ProductPage(WebDriver driver) {
++		this.driver = driver;
++		elementUtil = new ElementUtil(driver);
++		scrollToContents();
++	}
++	
++	private void scrollToContents() {
++		elementUtil.doScroll(breadcrumb);
++	}
++	
++	public String getProductName() {
++		return elementUtil.doGetText(productName);
++	}
++	
++	public BrandPage clickBrandName() {
++		elementUtil.doClick(brandName);
++		return new BrandPage(driver);
++	}
++}
+diff --git a/src/main/java/com/qa/chirag/utils/ElementUtil.java b/src/main/java/com/qa/chirag/utils/ElementUtil.java
+index 34625bc..f0dd06c 100644
+--- a/src/main/java/com/qa/chirag/utils/ElementUtil.java
++++ b/src/main/java/com/qa/chirag/utils/ElementUtil.java
+@@ -1,6 +1,7 @@
+ package com.qa.chirag.utils;
+ 
+ import java.time.Duration;
++import java.util.ArrayList;
+ import java.util.List;
+ 
+ import org.openqa.selenium.By;
+@@ -8,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
+ import org.openqa.selenium.WebDriver;
+ import org.openqa.selenium.WebElement;
+ import org.openqa.selenium.support.ui.ExpectedConditions;
++import org.openqa.selenium.support.ui.Select;
+ import org.openqa.selenium.support.ui.WebDriverWait;
+ 
+ public class ElementUtil {
+@@ -31,7 +33,7 @@ public class ElementUtil {
+ 	}
+ 
+ 	public String doGetTitle() {
+-		return driver.getTitle();
++		return driver.getTitle().trim();
+ 	}
+ 
+ 	public String doGetCurrentURL() {
+@@ -52,7 +54,15 @@ public class ElementUtil {
+ 	}
+ 
+ 	public String doGetText(By by) {
+-		return doGetElement(by).getText();
++		return doGetElement(by).getText().trim();
++	}
++	
++	public List<String> doGetTextListFromWebElements(By by) {
++		List<String> list = new ArrayList<String>();
++		for (WebElement e : doGetElements(by)) {
++			list.add(e.getText().trim());
++		}
++		return list;
+ 	}
+ 
+ 	public void doRefreshPage() {
+@@ -93,5 +103,23 @@ public class ElementUtil {
+ 			return false;
+ 		}
+ 	}
+-
++	
++	public void doSelectDropdownByVisibleText(By by, String textToSelect) {
++		Select select = new Select(doGetElement(by));
++		try {
++			select.selectByVisibleText(textToSelect);
++		} catch (Exception e) {
++		}
++	}
++	
++	public List<String> getListOfDropdownTexts(By by) {
++		List<String> list = new ArrayList<String>();
++		Select select = new Select(doGetElement(by));
++		List<WebElement> options = select.getOptions();
++		int size = options.size();
++		for(int i = 0; i < size; i++) {
++			list.add(options.get(i).getText());
++		}
++		return list;
++	}
+ }
+diff --git a/src/test/java/com/qa/chirag/base/BaseTest.java b/src/test/java/com/qa/chirag/base/BaseTest.java
+index 769d810..4770f40 100644
+--- a/src/test/java/com/qa/chirag/base/BaseTest.java
++++ b/src/test/java/com/qa/chirag/base/BaseTest.java
+@@ -7,11 +7,13 @@ import org.testng.annotations.AfterTest;
+ 
+ import com.qa.chirag.factory.DriverFactory;
+ import com.qa.chirag.pages.AccountPage;
++import com.qa.chirag.pages.BrandPage;
+ import com.qa.chirag.pages.CommonsPage;
+ import com.qa.chirag.pages.DesktopsPage;
+ import com.qa.chirag.pages.EditAccountInfoPage;
+ import com.qa.chirag.pages.HomePage;
+ import com.qa.chirag.pages.LoginPage;
++import com.qa.chirag.pages.ProductPage;
+ import com.qa.chirag.utils.Utilities;
+ 
+ public class BaseTest {
+@@ -28,6 +30,8 @@ public class BaseTest {
+ 	protected AccountPage accountPage;
+ 	protected DesktopsPage desktopsPage;
+ 	protected EditAccountInfoPage editAccountInfoPage;
++	protected ProductPage productPage;
++	protected BrandPage brandPage;
+ 
+ 	public BaseTest() {
+ 		df = new DriverFactory();
+diff --git a/src/test/java/com/qa/chirag/testcases/BrandPageTest.java b/src/test/java/com/qa/chirag/testcases/BrandPageTest.java
+new file mode 100644
+index 0000000..1b647cb
+--- /dev/null
++++ b/src/test/java/com/qa/chirag/testcases/BrandPageTest.java
+@@ -0,0 +1,28 @@
++package com.qa.chirag.testcases;
++
++import org.testng.Assert;
++import org.testng.annotations.BeforeClass;
++import org.testng.annotations.Test;
++
++import com.qa.chirag.base.BaseTest;
++
++public class BrandPageTest extends BaseTest {
++
++	@BeforeClass
++	public void brandPageSetup() {
++		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
++		desktopsPage = commonsPage.goToDesktopsPage();
++		productPage = desktopsPage.selectProduct("Canon EOS 5D");
++		brandPage = productPage.clickBrandName();
++	}
++
++	@Test(priority = 1)
++	public void verifyTitleTest() {
++		Assert.assertEquals(brandPage.getTitle(), "Canon");
++	}
++
++	@Test(priority = 2)
++	public void verifyBrandNameTest() {
++		Assert.assertEquals(brandPage.getBrandName(), "Canon");
++	}
++}
+\ No newline at end of file
+diff --git a/src/test/java/com/qa/chirag/testcases/DesktopsPageTest.java b/src/test/java/com/qa/chirag/testcases/DesktopsPageTest.java
+index aabd847..8f13c10 100644
+--- a/src/test/java/com/qa/chirag/testcases/DesktopsPageTest.java
++++ b/src/test/java/com/qa/chirag/testcases/DesktopsPageTest.java
+@@ -11,13 +11,22 @@ public class DesktopsPageTest extends BaseTest {
+ 
+ 	@BeforeClass
+ 	public void desktopsPageSetup() {
+-		accountPage = loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
++		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
+ 		desktopsPage = commonsPage.goToDesktopsPage();
+ 	}
+ 
+-	@Test
++	@Test(priority = 1)
+ 	public void titleTest() {
+ 		Assert.assertEquals(desktopsPage.getPageTitle(), Constants.DESKTOPS_PAGE_TITLE);
+ 	}
+-
++	
++	@Test(priority = 2)
++	public void productLimitDropdownTest() {
++		desktopsPage.selectFromShowDropdown(100);
++	}
++	
++	@Test(priority = 3)
++	public void selectProductTest() {		
++		desktopsPage.selectProduct("Samsung SyncMaster");
++	}
+ }
+diff --git a/src/test/java/com/qa/chirag/testcases/ProductPageTest.java b/src/test/java/com/qa/chirag/testcases/ProductPageTest.java
+new file mode 100644
+index 0000000..83bcf69
+--- /dev/null
++++ b/src/test/java/com/qa/chirag/testcases/ProductPageTest.java
+@@ -0,0 +1,22 @@
++package com.qa.chirag.testcases;
++
++import org.testng.Assert;
++import org.testng.annotations.BeforeClass;
++import org.testng.annotations.Test;
++
++import com.qa.chirag.base.BaseTest;
++
++public class ProductPageTest extends BaseTest {
++
++	@BeforeClass
++	public void productPageSetup() {
++		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
++		desktopsPage = commonsPage.goToDesktopsPage();
++		productPage = desktopsPage.selectProduct("Canon EOS 5D");
++	}
++
++	@Test
++	public void verifyProductNameTest() {
++		Assert.assertEquals(productPage.getProductName(), "Canon EOS 5D");
++	}
++}
+diff --git a/src/test/resources/testrunners/testng.xml b/src/test/resources/testrunners/testng.xml
+index 0f67c23..7350dd2 100644
+--- a/src/test/resources/testrunners/testng.xml
++++ b/src/test/resources/testrunners/testng.xml
+@@ -10,6 +10,8 @@
+     	<class name="com.qa.chirag.testcases.LoginPageTest"/>
+     	<class name="com.qa.chirag.testcases.DesktopsPageTest"/>
+       	<class name="com.qa.chirag.testcases.AccountPageTest"/>
++      	<class name="com.qa.chirag.testcases.ProductPageTest"/>
++      	<class name="com.qa.chirag.testcases.BrandPageTest"/>
+     </classes>
+   </test> <!-- Test -->
+ </suite> <!-- Suite -->
+\ No newline at end of file
+-- 
+2.36.1.windows.1
+
