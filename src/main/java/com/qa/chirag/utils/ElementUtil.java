@@ -56,7 +56,7 @@ public class ElementUtil {
 	public String doGetText(By by) {
 		return doGetElement(by).getText().trim();
 	}
-	
+
 	public List<String> doGetTextListFromWebElements(By by) {
 		List<String> list = new ArrayList<String>();
 		for (WebElement e : doGetElements(by)) {
@@ -103,7 +103,7 @@ public class ElementUtil {
 			return false;
 		}
 	}
-	
+
 	public void doSelectDropdownByVisibleText(By by, String textToSelect) {
 		Select select = new Select(doGetElement(by));
 		try {
@@ -111,13 +111,13 @@ public class ElementUtil {
 		} catch (Exception e) {
 		}
 	}
-	
+
 	public List<String> getListOfDropdownTexts(By by) {
 		List<String> list = new ArrayList<String>();
 		Select select = new Select(doGetElement(by));
 		List<WebElement> options = select.getOptions();
 		int size = options.size();
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			list.add(options.get(i).getText());
 		}
 		return list;

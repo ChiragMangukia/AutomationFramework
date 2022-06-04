@@ -19,14 +19,14 @@ public class DesktopsPageTest extends BaseTest {
 	public void titleTest() {
 		Assert.assertEquals(desktopsPage.getPageTitle(), Constants.DESKTOPS_PAGE_TITLE);
 	}
-	
+
 	@Test(priority = 2)
 	public void productLimitDropdownTest() {
 		desktopsPage.selectFromShowDropdown(100);
 	}
-	
+
 	@Test(priority = 3)
-	public void selectProductTest() {		
+	public void selectProductTest() {
 		desktopsPage.selectProduct("Samsung SyncMaster");
 	}
 }
