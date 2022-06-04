@@ -7,11 +7,13 @@ import org.testng.annotations.AfterTest;
 
 import com.qa.chirag.factory.DriverFactory;
 import com.qa.chirag.pages.AccountPage;
+import com.qa.chirag.pages.BrandPage;
 import com.qa.chirag.pages.CommonsPage;
 import com.qa.chirag.pages.DesktopsPage;
 import com.qa.chirag.pages.EditAccountInfoPage;
 import com.qa.chirag.pages.HomePage;
 import com.qa.chirag.pages.LoginPage;
+import com.qa.chirag.pages.ProductPage;
 import com.qa.chirag.utils.Utilities;
 
 public class BaseTest {
@@ -28,6 +30,8 @@ public class BaseTest {
 	protected AccountPage accountPage;
 	protected DesktopsPage desktopsPage;
 	protected EditAccountInfoPage editAccountInfoPage;
+	protected ProductPage productPage;
+	protected BrandPage brandPage;
 
 	public BaseTest() {
 		df = new DriverFactory();

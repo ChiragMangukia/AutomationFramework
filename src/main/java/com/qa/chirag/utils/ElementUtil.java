@@ -1,6 +1,7 @@
 package com.qa.chirag.utils;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -8,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ElementUtil {
@@ -31,7 +33,7 @@ public class ElementUtil {
 	}
 
 	public String doGetTitle() {
-		return driver.getTitle();
+		return driver.getTitle().trim();
 	}
 
 	public String doGetCurrentURL() {
@@ -52,7 +54,15 @@ public class ElementUtil {
 	}
 
 	public String doGetText(By by) {
-		return doGetElement(by).getText();
+		return doGetElement(by).getText().trim();
+	}
+	
+	public List<String> doGetTextListFromWebElements(By by) {
+		List<String> list = new ArrayList<String>();
+		for (WebElement e : doGetElements(by)) {
+			list.add(e.getText().trim());
+		}
+		return list;
 	}
 
 	public void doRefreshPage() {
@@ -93,5 +103,23 @@ public class ElementUtil {
 			return false;
 		}
 	}
-
+	
+	public void doSelectDropdownByVisibleText(By by, String textToSelect) {
+		Select select = new Select(doGetElement(by));
+		try {
+			select.selectByVisibleText(textToSelect);
+		} catch (Exception e) {
+		}
+	}
+	
+	public List<String> getListOfDropdownTexts(By by) {
+		List<String> list = new ArrayList<String>();
+		Select select = new Select(doGetElement(by));
+		List<WebElement> options = select.getOptions();
+		int size = options.size();
+		for(int i = 0; i < size; i++) {
+			list.add(options.get(i).getText());
+		}
+		return list;
+	}
 }

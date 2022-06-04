@@ -10,6 +10,8 @@
     	<class name="com.qa.chirag.testcases.LoginPageTest"/>
     	<class name="com.qa.chirag.testcases.DesktopsPageTest"/>
       	<class name="com.qa.chirag.testcases.AccountPageTest"/>
+      	<class name="com.qa.chirag.testcases.ProductPageTest"/>
+      	<class name="com.qa.chirag.testcases.BrandPageTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

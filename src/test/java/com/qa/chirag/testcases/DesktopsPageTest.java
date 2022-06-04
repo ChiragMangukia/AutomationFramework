@@ -11,13 +11,22 @@ public class DesktopsPageTest extends BaseTest {
 
 	@BeforeClass
 	public void desktopsPageSetup() {
-		accountPage = loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
+		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
 		desktopsPage = commonsPage.goToDesktopsPage();
 	}
 
-	@Test
+	@Test(priority = 1)
 	public void titleTest() {
 		Assert.assertEquals(desktopsPage.getPageTitle(), Constants.DESKTOPS_PAGE_TITLE);
 	}
-
+	
+	@Test(priority = 2)
+	public void productLimitDropdownTest() {
+		desktopsPage.selectFromShowDropdown(100);
+	}
+	
+	@Test(priority = 3)
+	public void selectProductTest() {		
+		desktopsPage.selectProduct("Samsung SyncMaster");
+	}
 }
