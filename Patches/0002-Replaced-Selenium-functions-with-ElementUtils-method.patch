@@ -1,0 +1,345 @@
+From 810af0c3d2edf9d2dbf9931b5a6dbb20f9612cae Mon Sep 17 00:00:00 2001
+From: Chirag Mangukia <chirag.mangukia@gmail.com>
+Date: Sat, 4 Jun 2022 13:49:12 +0530
+Subject: [PATCH 2/2] Replaced Selenium functions with ElementUtils methods
+
+---
+ .../java/com/qa/chirag/pages/AccountPage.java | 13 +++++---
+ .../java/com/qa/chirag/pages/CommonsPage.java | 30 ++++++++++---------
+ .../com/qa/chirag/pages/DesktopsPage.java     | 11 +++++--
+ .../qa/chirag/pages/EditAccountInfoPage.java  | 25 +++++++++-------
+ .../java/com/qa/chirag/pages/HomePage.java    | 16 +++++-----
+ .../java/com/qa/chirag/pages/LoginPage.java   | 12 +++++---
+ 6 files changed, 64 insertions(+), 43 deletions(-)
+
+diff --git a/src/main/java/com/qa/chirag/pages/AccountPage.java b/src/main/java/com/qa/chirag/pages/AccountPage.java
+index 07e9b13..287cb6d 100644
+--- a/src/main/java/com/qa/chirag/pages/AccountPage.java
++++ b/src/main/java/com/qa/chirag/pages/AccountPage.java
+@@ -3,33 +3,38 @@ package com.qa.chirag.pages;
+ import org.openqa.selenium.By;
+ import org.openqa.selenium.WebDriver;
+ 
++import com.qa.chirag.utils.ElementUtil;
++
+ public class AccountPage {
+ 
+ 	WebDriver driver;
+ 
++	private ElementUtil elementUtil;
++
+ 	private By successMsg = By.xpath("//div[@id='account-account']/div[1]");
+ 	private By editAcInfoLink = By.xpath("//*[@id='content']/ul[1]/li[1]/a");
+ 	private By changePswdLink = By.xpath("//*[@id='content']/ul[1]/li[2]/a");
+ 
+ 	public AccountPage(WebDriver driver) {
+ 		this.driver = driver;
++		elementUtil = new ElementUtil(driver);
+ 	}
+ 
+ 	public String getSuccessMsg() {
+-		return driver.findElement(successMsg).getText();
++		return elementUtil.doGetText(successMsg);
+ 	}
+ 
+ 	public EditAccountInfoPage openEditAcInfoPage() {
+-		driver.findElement(editAcInfoLink).click();
++		elementUtil.doClick(editAcInfoLink);
+ 		return new EditAccountInfoPage(driver);
+ 	}
+ 
+ 	public void navigateBack() {
+-		driver.navigate().back();
++		elementUtil.doNavigateBack();
+ 	}
+ 
+ 	public void openChangePswdPage() {
+-		driver.findElement(changePswdLink).click();
++		elementUtil.doClick(changePswdLink);
+ 	}
+ 
+ }
+diff --git a/src/main/java/com/qa/chirag/pages/CommonsPage.java b/src/main/java/com/qa/chirag/pages/CommonsPage.java
+index c08a508..ae177ed 100644
+--- a/src/main/java/com/qa/chirag/pages/CommonsPage.java
++++ b/src/main/java/com/qa/chirag/pages/CommonsPage.java
+@@ -1,13 +1,16 @@
+ package com.qa.chirag.pages;
+ 
+ import org.openqa.selenium.By;
+-import org.openqa.selenium.NoSuchElementException;
+ import org.openqa.selenium.WebDriver;
+ 
++import com.qa.chirag.utils.ElementUtil;
++
+ public class CommonsPage {
+ 
+ 	WebDriver driver;
+ 
++	private ElementUtil elementUtil;
++
+ 	private By logo = By.cssSelector("div#logo a img");
+ 
+ 	private By myAccountDropdown = By.xpath("//li[@class='dropdown']/a/span[text()='My Account']");
+@@ -24,6 +27,7 @@ public class CommonsPage {
+ 
+ 	public CommonsPage(WebDriver driver) {
+ 		this.driver = driver;
++		elementUtil = new ElementUtil(driver);
+ 	}
+ 
+ 	private By selectOptionFromMyAccountDropdown(String option) {
+@@ -32,59 +36,57 @@ public class CommonsPage {
+ 
+ 	private void clickMyAccountDropdown() {
+ 		clickLogo();
+-		driver.findElement(myAccountDropdown).click();
++		elementUtil.doClick(myAccountDropdown);
+ 	}
+ 
+ 	public LoginPage goToLogin() {
+ 		clickMyAccountDropdown();
+-		try {
+-			driver.findElement(loginLink).click();
+-		} catch (NoSuchElementException e) {
+-			return new LoginPage(driver);
++		if (elementUtil.checkIfElementIsPresent(loginLink)) {
++			elementUtil.doClick(loginLink);
+ 		}
+ 		return new LoginPage(driver);
+ 	}
+ 
+ 	public AccountPage goToMyAccount() {
+ 		clickMyAccountDropdown();
+-		driver.findElement(myAccountLink).click();
++		elementUtil.doClick(myAccountLink);
+ 		return new AccountPage(driver);
+ 	}
+ 
+ 	public void goToOrderHistory() {
+ 		clickMyAccountDropdown();
+-		driver.findElement(orderHistoryLink).click();
++		elementUtil.doClick(orderHistoryLink);
+ 		// return new AccountPage(driver);
+ 	}
+ 
+ 	public void goToTransactions() {
+ 		clickMyAccountDropdown();
+-		driver.findElement(transactionsLink).click();
++		elementUtil.doClick(transactionsLink);
+ 		// return new AccountPage(driver);
+ 	}
+ 
+ 	public void goToDownloads() {
+ 		clickMyAccountDropdown();
+-		driver.findElement(downloadsLink).click();
++		elementUtil.doClick(downloadsLink);
+ 	}
+ 
+ 	public void doLogout() {
+ 		clickMyAccountDropdown();
+-		driver.findElement(logoutLink).click();
++		elementUtil.doClick(logoutLink);
+ 	}
+ 
+ 	public HomePage clickLogo() {
+-		driver.findElement(logo).click();
++		elementUtil.doClick(logo);
+ 		return new HomePage(driver);
+ 	}
+ 
+ 	private void clickDesktop() {
+-		driver.findElement(desktopMenu).click();
++		elementUtil.doClick(desktopMenu);
+ 	}
+ 
+ 	public DesktopsPage goToDesktopsPage() {
+ 		clickDesktop();
+-		driver.findElement(showAllDesktopsLink).click();
++		elementUtil.doClick(showAllDesktopsLink);
+ 		return new DesktopsPage(driver);
+ 	}
+ 
+diff --git a/src/main/java/com/qa/chirag/pages/DesktopsPage.java b/src/main/java/com/qa/chirag/pages/DesktopsPage.java
+index f742cdb..ef9428b 100644
+--- a/src/main/java/com/qa/chirag/pages/DesktopsPage.java
++++ b/src/main/java/com/qa/chirag/pages/DesktopsPage.java
+@@ -7,27 +7,32 @@ import org.openqa.selenium.By;
+ import org.openqa.selenium.WebDriver;
+ import org.openqa.selenium.WebElement;
+ 
++import com.qa.chirag.utils.ElementUtil;
++
+ public class DesktopsPage {
+ 
+ 	WebDriver driver;
+ 
++	private ElementUtil elementUtil;
++
+ 	private By listedProducts = By.xpath("//div[@id='content']/div[4]/div");
+ 
+ 	public DesktopsPage(WebDriver driver) {
+ 		this.driver = driver;
++		elementUtil = new ElementUtil(driver);
+ 	}
+ 
+ 	public String getPageTitle() {
+-		return driver.getTitle();
++		return elementUtil.doGetTitle();
+ 	}
+ 
+ 	public int getProductCount() {
+-		return driver.findElements(listedProducts).size();
++		return elementUtil.doGetElements(listedProducts).size();
+ 	}
+ 
+ 	public List<String> getProductsList() {
+ 		List<String> products = new ArrayList<String>();
+-		for (WebElement e : driver.findElements(listedProducts)) {
++		for (WebElement e : elementUtil.doGetElements(listedProducts)) {
+ 			products.add(e.getText());
+ 		}
+ 		return products;
+diff --git a/src/main/java/com/qa/chirag/pages/EditAccountInfoPage.java b/src/main/java/com/qa/chirag/pages/EditAccountInfoPage.java
+index 1282c94..8feae96 100644
+--- a/src/main/java/com/qa/chirag/pages/EditAccountInfoPage.java
++++ b/src/main/java/com/qa/chirag/pages/EditAccountInfoPage.java
+@@ -3,10 +3,14 @@ package com.qa.chirag.pages;
+ import org.openqa.selenium.By;
+ import org.openqa.selenium.WebDriver;
+ 
++import com.qa.chirag.utils.ElementUtil;
++
+ public class EditAccountInfoPage {
+ 
+ 	WebDriver driver;
+ 
++	private ElementUtil elementUtil;
++
+ 	private By txtFirstName = By.cssSelector("#input-firstname");
+ 	private By txtLastName = By.cssSelector("#input-lastname");
+ 	private By txtEmail = By.cssSelector("#input-email");
+@@ -15,20 +19,19 @@ public class EditAccountInfoPage {
+ 
+ 	public EditAccountInfoPage(WebDriver driver) {
+ 		this.driver = driver;
++		elementUtil = new ElementUtil(driver);
+ 	}
+ 
+ 	public AccountPage editInfo(String firstname, String lastname, String email, String telephone) {
+-		driver.findElement(txtFirstName).clear();
+-		;
+-		driver.findElement(txtLastName).clear();
+-		;
+-		driver.findElement(txtEmail).clear();
+-		driver.findElement(txtTelephone).clear();
+-		driver.findElement(txtFirstName).sendKeys(firstname);
+-		driver.findElement(txtLastName).sendKeys(lastname);
+-		driver.findElement(txtEmail).sendKeys(email);
+-		driver.findElement(txtTelephone).sendKeys(telephone);
+-		driver.findElement(btnSubmit).click();
++		elementUtil.doClearTextbox(txtFirstName);
++		elementUtil.doClearTextbox(txtLastName);
++		elementUtil.doClearTextbox(txtEmail);
++		elementUtil.doClearTextbox(txtTelephone);
++		elementUtil.doSendKeys(txtFirstName, firstname);
++		elementUtil.doSendKeys(txtLastName, lastname);
++		elementUtil.doSendKeys(txtEmail, email);
++		elementUtil.doSendKeys(txtTelephone, telephone);
++		elementUtil.doClick(btnSubmit);
+ 		return new AccountPage(driver);
+ 	}
+ 
+diff --git a/src/main/java/com/qa/chirag/pages/HomePage.java b/src/main/java/com/qa/chirag/pages/HomePage.java
+index 276b528..a39e0b1 100644
+--- a/src/main/java/com/qa/chirag/pages/HomePage.java
++++ b/src/main/java/com/qa/chirag/pages/HomePage.java
+@@ -2,32 +2,34 @@ package com.qa.chirag.pages;
+ 
+ import org.openqa.selenium.By;
+ import org.openqa.selenium.WebDriver;
+-import org.openqa.selenium.WebElement;
++import com.qa.chirag.utils.ElementUtil;
+ 
+ public class HomePage {
+ 
+ 	private WebDriver driver;
+ 
++	private ElementUtil elementUtil;
++
+ 	private By myAccountDropdown = By.cssSelector("div#top-links ul li.dropdown");
+ 	private By loginLink = By.xpath("//div[@id=\"top-links\"]/ul/li[2]/ul/li[2]/a");
+ 
+ 	public HomePage(WebDriver driver) {
+ 		this.driver = driver;
++		elementUtil = new ElementUtil(driver);
+ 	}
+ 
+ 	public String getPageTitle() {
+-		return driver.getTitle();
++		return elementUtil.doGetTitle();
+ 	}
+ 
+ 	public String getCurrentURL() {
+-		return driver.getCurrentUrl();
++		return elementUtil.doGetURL();
+ 	}
+ 
+ 	public LoginPage goToLoginPage() {
+-		driver.findElement(myAccountDropdown).click();
+-		WebElement login = driver.findElement(loginLink);
+-		if (login.getText().equals("Login")) {
+-			login.click();
++		elementUtil.doClick(myAccountDropdown);
++		if (elementUtil.doGetText(loginLink).equals("Login")) {
++			elementUtil.doClick(loginLink);
+ 		}
+ 		return new LoginPage(driver);
+ 	}
+diff --git a/src/main/java/com/qa/chirag/pages/LoginPage.java b/src/main/java/com/qa/chirag/pages/LoginPage.java
+index 529512d..a3b2a98 100644
+--- a/src/main/java/com/qa/chirag/pages/LoginPage.java
++++ b/src/main/java/com/qa/chirag/pages/LoginPage.java
+@@ -4,21 +4,25 @@ import org.openqa.selenium.By;
+ import org.openqa.selenium.WebDriver;
+ 
+ import com.qa.chirag.utils.Constants;
++import com.qa.chirag.utils.ElementUtil;
+ 
+ public class LoginPage {
+ 
+ 	private WebDriver driver;
+ 
++	private ElementUtil elementUtil;
++
+ 	private By txtEmail = By.id("input-email");
+ 	private By txtPassword = By.id("input-password");
+ 	private By loginBtn = By.xpath("//*[@id=\"content\"]/div/div[2]/div/form/input");
+ 
+ 	public LoginPage(WebDriver driver) {
+ 		this.driver = driver;
++		elementUtil = new ElementUtil(driver);
+ 	}
+ 
+ 	public String getLoginPageTitle() {
+-		return driver.getTitle();
++		return elementUtil.doGetTitle();
+ 	}
+ 
+ 	public AccountPage doLogin(String username, String password) {
+@@ -26,9 +30,9 @@ public class LoginPage {
+ 		commonsPage.goToLogin();
+ 		if (getLoginPageTitle().contains(Constants.LOGIN_PAGE_TITLE)) {
+ 			if (username != "" && password != "") {
+-				driver.findElement(txtEmail).sendKeys(username);
+-				driver.findElement(txtPassword).sendKeys(password);
+-				driver.findElement(loginBtn).click();
++				elementUtil.doSendKeys(txtEmail, username);
++				elementUtil.doSendKeys(txtPassword, password);
++				elementUtil.doClick(loginBtn);
+ 			}
+ 		}
+ 		return new AccountPage(driver);
+-- 
+2.36.1.windows.1
+
