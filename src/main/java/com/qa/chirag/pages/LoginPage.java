@@ -4,10 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.qa.chirag.utils.Constants;
+import com.qa.chirag.utils.ElementUtil;
 
 public class LoginPage {
 
 	private WebDriver driver;
+
+	private ElementUtil elementUtil;
 
 	private By txtEmail = By.id("input-email");
 	private By txtPassword = By.id("input-password");
@@ -15,10 +18,11 @@ public class LoginPage {
 
 	public LoginPage(WebDriver driver) {
 		this.driver = driver;
+		elementUtil = new ElementUtil(driver);
 	}
 
 	public String getLoginPageTitle() {
-		return driver.getTitle();
+		return elementUtil.doGetTitle();
 	}
 
 	public AccountPage doLogin(String username, String password) {
@@ -26,9 +30,9 @@ public class LoginPage {
 		commonsPage.goToLogin();
 		if (getLoginPageTitle().contains(Constants.LOGIN_PAGE_TITLE)) {
 			if (username != "" && password != "") {
-				driver.findElement(txtEmail).sendKeys(username);
-				driver.findElement(txtPassword).sendKeys(password);
-				driver.findElement(loginBtn).click();
+				elementUtil.doSendKeys(txtEmail, username);
+				elementUtil.doSendKeys(txtPassword, password);
+				elementUtil.doClick(loginBtn);
 			}
 		}
 		return new AccountPage(driver);

@@ -1,12 +1,15 @@
 package com.qa.chirag.pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+
+import com.qa.chirag.utils.ElementUtil;
 
 public class CommonsPage {
 
 	WebDriver driver;
+
+	private ElementUtil elementUtil;
 
 	private By logo = By.cssSelector("div#logo a img");
 
@@ -24,6 +27,7 @@ public class CommonsPage {
 
 	public CommonsPage(WebDriver driver) {
 		this.driver = driver;
+		elementUtil = new ElementUtil(driver);
 	}
 
 	private By selectOptionFromMyAccountDropdown(String option) {
@@ -32,59 +36,57 @@ public class CommonsPage {
 
 	private void clickMyAccountDropdown() {
 		clickLogo();
-		driver.findElement(myAccountDropdown).click();
+		elementUtil.doClick(myAccountDropdown);
 	}
 
 	public LoginPage goToLogin() {
 		clickMyAccountDropdown();
-		try {
-			driver.findElement(loginLink).click();
-		} catch (NoSuchElementException e) {
-			return new LoginPage(driver);
+		if (elementUtil.checkIfElementIsPresent(loginLink)) {
+			elementUtil.doClick(loginLink);
 		}
 		return new LoginPage(driver);
 	}
 
 	public AccountPage goToMyAccount() {
 		clickMyAccountDropdown();
-		driver.findElement(myAccountLink).click();
+		elementUtil.doClick(myAccountLink);
 		return new AccountPage(driver);
 	}
 
 	public void goToOrderHistory() {
 		clickMyAccountDropdown();
-		driver.findElement(orderHistoryLink).click();
+		elementUtil.doClick(orderHistoryLink);
 		// return new AccountPage(driver);
 	}
 
 	public void goToTransactions() {
 		clickMyAccountDropdown();
-		driver.findElement(transactionsLink).click();
+		elementUtil.doClick(transactionsLink);
 		// return new AccountPage(driver);
 	}
 
 	public void goToDownloads() {
 		clickMyAccountDropdown();
-		driver.findElement(downloadsLink).click();
+		elementUtil.doClick(downloadsLink);
 	}
 
 	public void doLogout() {
 		clickMyAccountDropdown();
-		driver.findElement(logoutLink).click();
+		elementUtil.doClick(logoutLink);
 	}
 
 	public HomePage clickLogo() {
-		driver.findElement(logo).click();
+		elementUtil.doClick(logo);
 		return new HomePage(driver);
 	}
 
 	private void clickDesktop() {
-		driver.findElement(desktopMenu).click();
+		elementUtil.doClick(desktopMenu);
 	}
 
 	public DesktopsPage goToDesktopsPage() {
 		clickDesktop();
-		driver.findElement(showAllDesktopsLink).click();
+		elementUtil.doClick(showAllDesktopsLink);
 		return new DesktopsPage(driver);
 	}
 

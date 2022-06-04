@@ -2,32 +2,34 @@ package com.qa.chirag.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import com.qa.chirag.utils.ElementUtil;
 
 public class HomePage {
 
 	private WebDriver driver;
+
+	private ElementUtil elementUtil;
 
 	private By myAccountDropdown = By.cssSelector("div#top-links ul li.dropdown");
 	private By loginLink = By.xpath("//div[@id=\"top-links\"]/ul/li[2]/ul/li[2]/a");
 
 	public HomePage(WebDriver driver) {
 		this.driver = driver;
+		elementUtil = new ElementUtil(driver);
 	}
 
 	public String getPageTitle() {
-		return driver.getTitle();
+		return elementUtil.doGetTitle();
 	}
 
 	public String getCurrentURL() {
-		return driver.getCurrentUrl();
+		return elementUtil.doGetURL();
 	}
 
 	public LoginPage goToLoginPage() {
-		driver.findElement(myAccountDropdown).click();
-		WebElement login = driver.findElement(loginLink);
-		if (login.getText().equals("Login")) {
-			login.click();
+		elementUtil.doClick(myAccountDropdown);
+		if (elementUtil.doGetText(loginLink).equals("Login")) {
+			elementUtil.doClick(loginLink);
 		}
 		return new LoginPage(driver);
 	}

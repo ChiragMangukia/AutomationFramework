@@ -3,9 +3,13 @@ package com.qa.chirag.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import com.qa.chirag.utils.ElementUtil;
+
 public class AccountPage {
 
 	WebDriver driver;
+
+	private ElementUtil elementUtil;
 
 	private By successMsg = By.xpath("//div[@id='account-account']/div[1]");
 	private By editAcInfoLink = By.xpath("//*[@id='content']/ul[1]/li[1]/a");
@@ -13,23 +17,24 @@ public class AccountPage {
 
 	public AccountPage(WebDriver driver) {
 		this.driver = driver;
+		elementUtil = new ElementUtil(driver);
 	}
 
 	public String getSuccessMsg() {
-		return driver.findElement(successMsg).getText();
+		return elementUtil.doGetText(successMsg);
 	}
 
 	public EditAccountInfoPage openEditAcInfoPage() {
-		driver.findElement(editAcInfoLink).click();
+		elementUtil.doClick(editAcInfoLink);
 		return new EditAccountInfoPage(driver);
 	}
 
 	public void navigateBack() {
-		driver.navigate().back();
+		elementUtil.doNavigateBack();
 	}
 
 	public void openChangePswdPage() {
-		driver.findElement(changePswdLink).click();
+		elementUtil.doClick(changePswdLink);
 	}
 
 }
