@@ -19,8 +19,8 @@ import com.qa.chirag.utils.Utilities;
 public class TestNGListener implements ITestListener {
 
 	ExtentReport extentReport;
-	public ExtentReports extent;
-	public ExtentTest logger;
+	ExtentReports extent;
+	ExtentTest logger;
 
 	@Override
 	public void onTestStart(ITestResult result) {
