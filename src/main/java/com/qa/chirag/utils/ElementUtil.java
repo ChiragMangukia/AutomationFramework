@@ -68,9 +68,9 @@ public class ElementUtil {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 	}
 
-	public void doWait(WebElement webElement) {
+	public void doWait(By by) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.visibilityOfAllElements(webElement));
+		wait.until(ExpectedConditions.visibilityOfAllElements(doGetElements(by)));
 	}
 
 	public void doScroll(By by) {
