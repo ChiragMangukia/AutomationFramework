@@ -18,16 +18,28 @@ public class ElementUtil {
 		this.driver = driver;
 	}
 
+	public WebElement doGetElement(By by) {
+		return driver.findElement(by);
+	}
+
+	public void doClearTextbox(By by) {
+		doGetElement(by).clear();
+	}
+
 	public String doGetTitle() {
 		return driver.getTitle();
 	}
 
+	public String doGetURL() {
+		return driver.getCurrentUrl();
+	}
+
 	public void doSendKeys(By by, String value) {
-		driver.findElement(by).sendKeys(value);
+		doGetElement(by).sendKeys(value);
 	}
 
 	public void doClick(By by) {
-		driver.findElement(by).click();
+		doGetElement(by).click();
 	}
 
 	public List<WebElement> doGetElements(By by) {
@@ -38,17 +50,21 @@ public class ElementUtil {
 		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.visibilityOfAllElements(webElement));
 	}
 
-	public String doGetText(WebElement webElement) {
-		return webElement.getText();
+	public String doGetText(By by) {
+		return doGetElement(by).getText();
 	}
 
 	public void doRefreshPage() {
 		driver.navigate().refresh();
 	}
 
-	public void doWait(By byLocator, Duration timeOutInSeconds) {
+	public void doNavigateBack() {
+		driver.navigate().back();
+	}
+
+	public void doWait(By by, Duration timeOutInSeconds) {
 		WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(byLocator));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 	}
 
 	public void doWait(WebElement webElement) {
@@ -67,10 +83,10 @@ public class ElementUtil {
 		} catch (InterruptedException e) {
 		}
 	}
-	
+
 	public Boolean checkIfElementIsPresent(By by) {
 		try {
-			driver.findElement(by);
+			doGetElement(by);
 			return true;
 		} catch (Exception e) {
 			return false;
