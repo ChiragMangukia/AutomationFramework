@@ -22,7 +22,11 @@ public class ElementUtil {
 		return driver.findElement(by);
 	}
 
-	public void doClearTextbox(By by) {
+	public List<WebElement> doGetElements(By by) {
+		return driver.findElements(by);
+	}
+
+	public void doClear(By by) {
 		doGetElement(by).clear();
 	}
 
@@ -30,7 +34,7 @@ public class ElementUtil {
 		return driver.getTitle();
 	}
 
-	public String doGetURL() {
+	public String doGetCurrentURL() {
 		return driver.getCurrentUrl();
 	}
 
@@ -42,12 +46,9 @@ public class ElementUtil {
 		doGetElement(by).click();
 	}
 
-	public List<WebElement> doGetElements(By by) {
-		return driver.findElements(by);
-	}
-
-	public void waitForWebElements(List<WebElement> webElement, Duration timeOutInSeconds) {
-		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.visibilityOfAllElements(webElement));
+	public void waitForWebElements(By by, Duration timeOutInSeconds) {
+		new WebDriverWait(driver, timeOutInSeconds)
+				.until(ExpectedConditions.visibilityOfAllElements(doGetElements(by)));
 	}
 
 	public String doGetText(By by) {
@@ -74,7 +75,7 @@ public class ElementUtil {
 
 	public void doScroll(By by) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].scrollIntoView();", driver.findElement(by));
+		js.executeScript("arguments[0].scrollIntoView();", doGetElement(by));
 	}
 
 	public void sleep(int timeOutInSeconds) {

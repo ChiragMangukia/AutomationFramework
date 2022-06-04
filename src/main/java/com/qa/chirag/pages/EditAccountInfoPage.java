@@ -23,10 +23,10 @@ public class EditAccountInfoPage {
 	}
 
 	public AccountPage editInfo(String firstname, String lastname, String email, String telephone) {
-		elementUtil.doClearTextbox(txtFirstName);
-		elementUtil.doClearTextbox(txtLastName);
-		elementUtil.doClearTextbox(txtEmail);
-		elementUtil.doClearTextbox(txtTelephone);
+		elementUtil.doClear(txtFirstName);
+		elementUtil.doClear(txtLastName);
+		elementUtil.doClear(txtEmail);
+		elementUtil.doClear(txtTelephone);
 		elementUtil.doSendKeys(txtFirstName, firstname);
 		elementUtil.doSendKeys(txtLastName, lastname);
 		elementUtil.doSendKeys(txtEmail, email);

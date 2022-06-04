@@ -23,7 +23,7 @@ public class HomePage {
 	}
 
 	public String getCurrentURL() {
-		return elementUtil.doGetURL();
+		return elementUtil.doGetCurrentURL();
 	}
 
 	public LoginPage goToLoginPage() {
