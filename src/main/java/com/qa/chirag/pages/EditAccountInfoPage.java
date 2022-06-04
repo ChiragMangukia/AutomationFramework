@@ -11,6 +11,7 @@ public class EditAccountInfoPage {
 
 	private ElementUtil elementUtil;
 
+	private By h1Label = By.cssSelector("div#content h1");
 	private By txtFirstName = By.cssSelector("#input-firstname");
 	private By txtLastName = By.cssSelector("#input-lastname");
 	private By txtEmail = By.cssSelector("#input-email");
@@ -23,6 +24,7 @@ public class EditAccountInfoPage {
 	}
 
 	public AccountPage editInfo(String firstname, String lastname, String email, String telephone) {
+		elementUtil.doScroll(h1Label);
 		elementUtil.doClear(txtFirstName);
 		elementUtil.doClear(txtLastName);
 		elementUtil.doClear(txtEmail);
