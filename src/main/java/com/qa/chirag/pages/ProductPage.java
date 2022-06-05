@@ -55,25 +55,25 @@ public class ProductPage {
 		elementUtil.doClick(currentDate);
 		elementUtil.doClick(yearHeader);
 
-		if (!elementUtil.doFindAndClickFromWebElementsList(years, expectedYear)) {
+		if (!elementUtil.doFindAndClickFromElementsList(years, expectedYear)) {
 			Boolean loop = true;
 			while (loop) {
 				int firstYearInBlockString = Integer.parseInt(elementUtil.doGetText(firstYearInBlock));
 				int lastYearInBlockString = Integer.parseInt(elementUtil.doGetText(LastYearInBlock));
 				if (Integer.parseInt(expectedYear) < firstYearInBlockString) {
 					elementUtil.doClick(moveToPreviousYear);
-					if (elementUtil.doFindAndClickFromWebElementsList(years, expectedYear)) {
+					if (elementUtil.doFindAndClickFromElementsList(years, expectedYear)) {
 						loop = false;
 					}
 				} else if (Integer.parseInt(expectedYear) > lastYearInBlockString) {
 					elementUtil.doClick(moveToNextYear);
-					if (elementUtil.doFindAndClickFromWebElementsList(years, expectedYear)) {
+					if (elementUtil.doFindAndClickFromElementsList(years, expectedYear)) {
 						loop = false;
 					}
 				}
 			}
 		}
-		elementUtil.doFindAndClickFromWebElementsList(months, expectedMonth);
-		elementUtil.doFindAndClickFromWebElementsList(dates, expectedDate);
+		elementUtil.doFindAndClickFromElementsList(months, expectedMonth);
+		elementUtil.doFindAndClickFromElementsList(dates, expectedDate);
 	}
 }

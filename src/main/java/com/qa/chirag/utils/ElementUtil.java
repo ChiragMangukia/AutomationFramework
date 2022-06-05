@@ -123,7 +123,7 @@ public class ElementUtil {
 		return list;
 	}
 	
-	public Boolean doFindAndClickFromWebElementsList(By by, String valueToClick) {
+	public Boolean doFindAndClickFromElementsList(By by, String valueToClick) {
 		Boolean clicked = false;
 		for (WebElement e : doGetElements(by)) {
 			if (e.getText().equalsIgnoreCase(valueToClick)) {
