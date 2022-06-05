@@ -22,6 +22,6 @@ public class ProductPageTest extends BaseTest {
 	
 	@Test
 	public void dateSelectionTest() {
-		productPage.selectDate("14041991");
+		productPage.selectDate("14082022");
 	}
 }
