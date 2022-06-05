@@ -122,4 +122,26 @@ public class ElementUtil {
 		}
 		return list;
 	}
+	
+	public Boolean doFindAndClickFromWebElementsList(By by, String valueToClick) {
+		Boolean clicked = false;
+		for (WebElement e : doGetElements(by)) {
+			if (e.getText().equalsIgnoreCase(valueToClick)) {
+				e.click();
+				clicked = true;
+				break;
+			}
+		}
+		return clicked;
+	}
+	
+	public Boolean doSearchIfValuePresentInList(By by, String valueToSearch) {
+		Boolean isPresent = false;
+		for(WebElement e : doGetElements(by)) {
+			if(e.getText().equalsIgnoreCase(valueToSearch)) {
+				isPresent = true;
+			}
+		}
+		return isPresent;
+	}
 }

@@ -12,11 +12,16 @@ public class ProductPageTest extends BaseTest {
 	public void productPageSetup() {
 		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
 		desktopsPage = commonsPage.goToDesktopsPage();
-		productPage = desktopsPage.selectProduct("Canon EOS 5D");
+		productPage = desktopsPage.selectProduct("Apple Cinema");
 	}
 
 	@Test
 	public void verifyProductNameTest() {
-		Assert.assertEquals(productPage.getProductName(), "Canon EOS 5D");
+		Assert.assertEquals(productPage.getProductName(), "Apple Cinema 30\"");
+	}
+	
+	@Test
+	public void dateSelectionTest() {
+		productPage.selectDate("14041991");
 	}
 }
