@@ -10,7 +10,6 @@ import org.openqa.selenium.WebDriver;
 
 import com.google.common.io.Files;
 import com.qa.chirag.utils.Browsers;
-import com.qa.chirag.utils.OptionsManager;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 

@@ -1,4 +1,4 @@
-package com.qa.chirag.utils;
+package com.qa.chirag.factory;
 
 import java.util.Properties;
 
