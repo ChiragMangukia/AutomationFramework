@@ -16,12 +16,12 @@ public class ExtentReport {
 		String browser = Utilities.getProp().getProperty("browser");
 		
 		ExtentReports extent = new ExtentReports();
-		ExtentSparkReporter reporter = new ExtentSparkReporter("./Reportss/" + repName);
+		ExtentSparkReporter reporter = new ExtentSparkReporter("./Reports/" + repName);
 		reporter.config().setReportName("Automation Test Results");
 		reporter.config().setDocumentTitle("Test Automation");
 		extent.attachReporter(reporter);
 		extent.setSystemInfo("System", System.getProperty("os.name"));
-		extent.setSystemInfo("Browser", browser.substring(0, 1).toUpperCase() + browser.substring(1));
+		extent.setSystemInfo("Browser", browser.substring(0, 1).toUpperCase() + browser.substring(1).toLowerCase());
 		extent.setSystemInfo("Author", "Chirag Mangukia");
 		extent.setSystemInfo("Build#", "2.1");
 		extent.setSystemInfo("Team", "OMS");
