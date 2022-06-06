@@ -1,0 +1,57 @@
+From 210fda1192b4f5e3adde423ce6adbb5c4f3133e6 Mon Sep 17 00:00:00 2001
+From: Chirag Mangukia <chirag.mangukia@gmail.com>
+Date: Mon, 6 Jun 2022 21:01:23 +0530
+Subject: [PATCH] Enhanced ThreadLocal
+
+---
+ src/main/java/com/qa/chirag/factory/DriverFactory.java | 8 +++++---
+ src/main/java/com/qa/chirag/utils/Utilities.java       | 2 +-
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/java/com/qa/chirag/factory/DriverFactory.java b/src/main/java/com/qa/chirag/factory/DriverFactory.java
+index fe227b8..ad4833b 100644
+--- a/src/main/java/com/qa/chirag/factory/DriverFactory.java
++++ b/src/main/java/com/qa/chirag/factory/DriverFactory.java
+@@ -10,12 +10,13 @@ import io.github.bonigarcia.wdm.WebDriverManager;
+ 
+ public class DriverFactory {
+ 
++	protected static WebDriver driver = null;
+ 	OptionsManager optionsManager;
+ 	
+ 	private static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<WebDriver>();
+ 
+ 	public WebDriver initDriver(Properties prop) {
+-		if (getDriver() == null) {
++		if (driver == null) {
+ 			optionsManager = new OptionsManager(prop);
+ 			String browser = prop.getProperty("browser").trim();
+ 			if (browser.equalsIgnoreCase(Browsers.CHROME)) {
+@@ -30,7 +31,8 @@ public class DriverFactory {
+ 		return getDriver();
+ 	}
+ 	
+-	protected static synchronized WebDriver getDriver() {
+-		return tlDriver.get();
++	private static synchronized WebDriver getDriver() {
++		driver = tlDriver.get();
++		return driver;
+ 	}
+ }
+\ No newline at end of file
+diff --git a/src/main/java/com/qa/chirag/utils/Utilities.java b/src/main/java/com/qa/chirag/utils/Utilities.java
+index 21fd4e5..ee419b8 100644
+--- a/src/main/java/com/qa/chirag/utils/Utilities.java
++++ b/src/main/java/com/qa/chirag/utils/Utilities.java
+@@ -46,7 +46,7 @@ public class Utilities extends DriverFactory {
+ 	public static String takeScreenshot() {
+ 		String fileName = "";
+ 		try {
+-			File src = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
++			File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+ 			fileName = System.currentTimeMillis() + ".png";
+ 			String path = "./Screenshots/" + fileName;
+ 			File destination = new File(path);
+-- 
+2.36.1.windows.1
+
