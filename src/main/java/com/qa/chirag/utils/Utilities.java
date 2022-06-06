@@ -46,7 +46,7 @@ public class Utilities extends DriverFactory {
 	public static String takeScreenshot() {
 		String fileName = "";
 		try {
-			File src = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
+			File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 			fileName = System.currentTimeMillis() + ".png";
 			String path = "./Screenshots/" + fileName;
 			File destination = new File(path);
