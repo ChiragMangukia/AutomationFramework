@@ -1,0 +1,44 @@
+From 9514be7a5cffa46c0db3a6b76769c516e578dcc4 Mon Sep 17 00:00:00 2001
+From: Chirag Mangukia <chirag.mangukia@gmail.com>
+Date: Mon, 6 Jun 2022 20:19:24 +0530
+Subject: [PATCH] Minor changes
+
+---
+ src/main/java/com/qa/chirag/pages/HomePage.java  |  1 -
+ src/main/java/com/qa/chirag/utils/Utilities.java | 10 ----------
+ 2 files changed, 11 deletions(-)
+
+diff --git a/src/main/java/com/qa/chirag/pages/HomePage.java b/src/main/java/com/qa/chirag/pages/HomePage.java
+index be349a7..ad678ec 100644
+--- a/src/main/java/com/qa/chirag/pages/HomePage.java
++++ b/src/main/java/com/qa/chirag/pages/HomePage.java
+@@ -40,7 +40,6 @@ public class HomePage {
+ 		elementUtil.doScroll(labelFeatured);
+ 		WebElement productThumb = elementUtil.doGetElement(selectProduct(product));
+ 		elementUtil.doGetElement(with(addToCartButton).below(productThumb)).click();
+-		elementUtil.sleep(10);
+ 	}
+ 
+ 	public LoginPage goToLoginPage() {
+diff --git a/src/main/java/com/qa/chirag/utils/Utilities.java b/src/main/java/com/qa/chirag/utils/Utilities.java
+index 576d2fd..708e7ef 100644
+--- a/src/main/java/com/qa/chirag/utils/Utilities.java
++++ b/src/main/java/com/qa/chirag/utils/Utilities.java
+@@ -30,14 +30,4 @@ public class Utilities {
+ 			file.mkdir();
+ 		}
+ 	}
+-
+-	public static void doWait(long timeInMiliSeconds) {
+-		try {
+-			Thread.sleep(5000);
+-		} catch (InterruptedException e) {
+-			// TODO Auto-generated catch block
+-			e.printStackTrace();
+-		}
+-	}
+-
+ }
+-- 
+2.36.1.windows.1
+
