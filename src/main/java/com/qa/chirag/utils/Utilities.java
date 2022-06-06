@@ -19,7 +19,7 @@ public class Utilities extends DriverFactory {
 	public static Properties getProp() {
 		Properties prop = new Properties();
 		String path = "./src/test/resources/config/config.properties";
-		
+
 		FileInputStream ip;
 		try {
 			ip = new FileInputStream(path);
@@ -38,7 +38,7 @@ public class Utilities extends DriverFactory {
 			file.mkdir();
 		}
 	}
-	
+
 	/**
 	 *
 	 * @param driver Accepts WebDriver object
@@ -58,7 +58,7 @@ public class Utilities extends DriverFactory {
 		}
 		return fileName;
 	}
-	
+
 	public static Date getTime(long millis) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(millis);

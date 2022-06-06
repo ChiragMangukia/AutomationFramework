@@ -44,7 +44,7 @@ public class ProductPage {
 		elementUtil.doClick(brandName);
 		return new BrandPage(driver);
 	}
-	
+
 	public void selectDate(String DDMMYYYY) {
 		elementUtil.doScroll(calendarDatePicker);
 		elementUtil.doClick(calendarDatePicker);
@@ -56,7 +56,7 @@ public class ProductPage {
 		elementUtil.doClick(yearHeader);
 
 		if (!elementUtil.doFindAndClickFromElementsList(years, expectedYear)) {
-			Boolean loop = true;
+			boolean loop = true;
 			while (loop) {
 				int firstYearInBlockString = Integer.parseInt(elementUtil.doGetText(firstYearInBlock));
 				int lastYearInBlockString = Integer.parseInt(elementUtil.doGetText(LastYearInBlock));

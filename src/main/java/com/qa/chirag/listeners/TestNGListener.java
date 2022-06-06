@@ -15,7 +15,7 @@ import com.qa.chirag.utils.Utilities;
 
 public class TestNGListener implements ITestListener {
 
-	ThreadLocal<ExtentTest> test = new ThreadLocal<ExtentTest>();
+	ThreadLocal<ExtentTest> test = new ThreadLocal<>();
 
 	ExtentReport extentReport;
 	ExtentReports extent;

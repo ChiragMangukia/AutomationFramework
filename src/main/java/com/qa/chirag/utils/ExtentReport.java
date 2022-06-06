@@ -8,13 +8,13 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
 public class ExtentReport {
-	
+
 	public ExtentReports initReport() {
-		
+
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());// time stamp
 		String repName = "Test-Report-" + timeStamp + ".html";
 		String browser = Utilities.getProp().getProperty("browser");
-		
+
 		ExtentReports extent = new ExtentReports();
 		ExtentSparkReporter reporter = new ExtentSparkReporter("./Reports/" + repName);
 		reporter.config().setReportName("Automation Test Results");
@@ -25,9 +25,9 @@ public class ExtentReport {
 		extent.setSystemInfo("Author", "Chirag Mangukia");
 		extent.setSystemInfo("Build#", "2.1");
 		extent.setSystemInfo("Team", "OMS");
-		
+
 		reporter.config().setTheme(Theme.STANDARD);
-		
+
 		return extent;
 	}
 

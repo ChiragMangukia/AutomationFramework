@@ -12,8 +12,8 @@ public class DriverFactory {
 
 	protected static WebDriver driver = null;
 	OptionsManager optionsManager;
-	
-	private static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<WebDriver>();
+
+	private static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
 
 	public WebDriver initDriver(Properties prop) {
 		if (driver == null) {
@@ -22,7 +22,8 @@ public class DriverFactory {
 			if (browser.equalsIgnoreCase(Browsers.CHROME)) {
 				tlDriver.set(WebDriverManager.chromedriver().capabilities(optionsManager.getChromeOptions()).create());
 			} else if (browser.equalsIgnoreCase(Browsers.FIREFOX)) {
-				tlDriver.set(WebDriverManager.firefoxdriver().capabilities(optionsManager.getFirefoxOptions()).create());
+				tlDriver.set(
+						WebDriverManager.firefoxdriver().capabilities(optionsManager.getFirefoxOptions()).create());
 			}
 		}
 		getDriver().manage().deleteAllCookies();
@@ -30,7 +31,7 @@ public class DriverFactory {
 		getDriver().get(prop.getProperty("url").trim());
 		return getDriver();
 	}
-	
+
 	private static synchronized WebDriver getDriver() {
 		driver = tlDriver.get();
 		return driver;

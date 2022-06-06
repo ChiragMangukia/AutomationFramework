@@ -19,7 +19,7 @@ public class ProductPageTest extends BaseTest {
 	public void verifyProductNameTest() {
 		Assert.assertEquals(productPage.getProductName(), "Apple Cinema 30\"");
 	}
-	
+
 	@Test
 	public void dateSelectionTest() {
 		productPage.selectDate("14082022");

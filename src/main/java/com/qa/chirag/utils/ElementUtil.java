@@ -58,7 +58,7 @@ public class ElementUtil {
 	}
 
 	public List<String> doGetTextListFromWebElements(By by) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		for (WebElement e : doGetElements(by)) {
 			list.add(e.getText().trim());
 		}
@@ -113,7 +113,7 @@ public class ElementUtil {
 	}
 
 	public List<String> getListOfDropdownTexts(By by) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		Select select = new Select(doGetElement(by));
 		List<WebElement> options = select.getOptions();
 		int size = options.size();
@@ -122,9 +122,9 @@ public class ElementUtil {
 		}
 		return list;
 	}
-	
+
 	public Boolean doFindAndClickFromElementsList(By by, String valueToClick) {
-		Boolean clicked = false;
+		boolean clicked = false;
 		for (WebElement e : doGetElements(by)) {
 			if (e.getText().equalsIgnoreCase(valueToClick)) {
 				e.click();
@@ -134,11 +134,11 @@ public class ElementUtil {
 		}
 		return clicked;
 	}
-	
+
 	public Boolean doSearchIfValuePresentInList(By by, String valueToSearch) {
-		Boolean isPresent = false;
-		for(WebElement e : doGetElements(by)) {
-			if(e.getText().equalsIgnoreCase(valueToSearch)) {
+		boolean isPresent = false;
+		for (WebElement e : doGetElements(by)) {
+			if (e.getText().equalsIgnoreCase(valueToSearch)) {
 				isPresent = true;
 			}
 		}
