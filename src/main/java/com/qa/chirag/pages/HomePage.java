@@ -40,7 +40,6 @@ public class HomePage {
 		elementUtil.doScroll(labelFeatured);
 		WebElement productThumb = elementUtil.doGetElement(selectProduct(product));
 		elementUtil.doGetElement(with(addToCartButton).below(productThumb)).click();
-		elementUtil.sleep(10);
 	}
 
 	public LoginPage goToLoginPage() {
