@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 
 import org.openqa.selenium.OutputType;
@@ -55,5 +57,11 @@ public class Utilities extends DriverFactory {
 			e.printStackTrace();
 		}
 		return fileName;
+	}
+	
+	public static Date getTime(long millis) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(millis);
+		return calendar.getTime();
 	}
 }
