@@ -1,7 +1,5 @@
 package com.qa.chirag.listeners;
 
-import java.io.IOException;
-
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -17,36 +15,49 @@ import com.qa.chirag.utils.Utilities;
 
 public class TestNGListener implements ITestListener {
 
+	ThreadLocal<ExtentTest> test = new ThreadLocal<ExtentTest>();
+
 	ExtentReport extentReport;
 	ExtentReports extent;
 	ExtentTest logger;
 
 	@Override
 	public void onTestStart(ITestResult result) {
+		String qualifiedName = result.getMethod().getQualifiedName();
+		int last = qualifiedName.lastIndexOf(".");
+		int mid = qualifiedName.substring(0, last).lastIndexOf(".");
+		String className = qualifiedName.substring(mid + 1, last);
+
+		logger = extent.createTest(result.getMethod().getMethodName(), result.getMethod().getDescription());
+		logger.assignCategory(result.getTestContext().getSuite().getName());
+		logger.assignCategory(className);
+		test.set(logger);
+		logger = test.get();
+		logger.getModel().setStartTime(Utilities.getTime(result.getStartMillis()));
 	}
 
 	@Override
 	public void onTestSuccess(ITestResult result) {
-		logger = extent.createTest(result.getName());
-		logger.log(Status.PASS, MarkupHelper.createLabel(result.getName(), ExtentColor.GREEN));
+		logger.log(Status.PASS, MarkupHelper.createLabel("Test passed", ExtentColor.GREEN));
+		logger.getModel().setEndTime(Utilities.getTime(result.getEndMillis()));
 	}
 
 	@Override
 	public void onTestFailure(ITestResult result) {
 		String file = Utilities.takeScreenshot();
-		logger = extent.createTest(result.getName());
-		logger.log(Status.FAIL, MarkupHelper.createLabel(result.getName(), ExtentColor.RED));
+		logger.log(Status.FAIL, MarkupHelper.createLabel("Test Failed", ExtentColor.RED));
 		try {
 			logger.fail(result.getThrowable().getMessage(), MediaEntityBuilder
 					.createScreenCaptureFromPath(System.getProperty("user.dir") + "/Screenshots/" + file).build());
-		} catch (IOException e) {
+		} catch (Exception e) {
 		}
+		logger.getModel().setEndTime(Utilities.getTime(result.getEndMillis()));
 	}
 
 	@Override
 	public void onTestSkipped(ITestResult result) {
-		logger = extent.createTest(result.getName());
-		logger.log(Status.SKIP, MarkupHelper.createLabel(result.getName(), ExtentColor.ORANGE));
+		logger.log(Status.SKIP, MarkupHelper.createLabel("Test skipped", ExtentColor.ORANGE));
+		logger.getModel().setEndTime(Utilities.getTime(result.getEndMillis()));
 	}
 
 	@Override
@@ -57,12 +68,11 @@ public class TestNGListener implements ITestListener {
 	@Override
 	public void onTestFailedWithTimeout(ITestResult result) {
 		String file = Utilities.takeScreenshot();
-		logger = extent.createTest(result.getName());
-		logger.log(Status.FAIL, MarkupHelper.createLabel(result.getName(), ExtentColor.RED));
+		logger.log(Status.FAIL, MarkupHelper.createLabel("Test failed with timeout", ExtentColor.RED));
 		try {
 			logger.fail(result.getThrowable().getMessage(), MediaEntityBuilder
 					.createScreenCaptureFromPath(System.getProperty("user.dir") + "/Screenshots/" + file).build());
-		} catch (IOException e) {
+		} catch (Exception e) {
 		}
 	}
 
@@ -78,5 +88,4 @@ public class TestNGListener implements ITestListener {
 	public void onFinish(ITestContext context) {
 		extent.flush();
 	}
-
 }
