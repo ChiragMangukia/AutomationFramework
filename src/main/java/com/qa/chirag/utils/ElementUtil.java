@@ -95,7 +95,7 @@ public class ElementUtil {
 		}
 	}
 
-	public Boolean checkIfElementIsPresent(By by) {
+	public boolean checkIfElementIsPresent(By by) {
 		try {
 			doGetElement(by);
 			return true;
@@ -123,7 +123,7 @@ public class ElementUtil {
 		return list;
 	}
 
-	public Boolean doFindAndClickFromElementsList(By by, String valueToClick) {
+	public boolean doFindAndClickFromElementsList(By by, String valueToClick) {
 		boolean clicked = false;
 		for (WebElement e : doGetElements(by)) {
 			if (e.getText().equalsIgnoreCase(valueToClick)) {
@@ -135,7 +135,7 @@ public class ElementUtil {
 		return clicked;
 	}
 
-	public Boolean doSearchIfValuePresentInList(By by, String valueToSearch) {
+	public boolean doSearchIfValuePresentInList(By by, String valueToSearch) {
 		boolean isPresent = false;
 		for (WebElement e : doGetElements(by)) {
 			if (e.getText().equalsIgnoreCase(valueToSearch)) {
