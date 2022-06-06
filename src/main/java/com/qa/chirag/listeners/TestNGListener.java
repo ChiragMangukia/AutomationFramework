@@ -12,7 +12,6 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
-import com.qa.chirag.factory.DriverFactory;
 import com.qa.chirag.utils.ExtentReport;
 import com.qa.chirag.utils.Utilities;
 
@@ -34,7 +33,7 @@ public class TestNGListener implements ITestListener {
 
 	@Override
 	public void onTestFailure(ITestResult result) {
-		String file = DriverFactory.takeScreenshot();
+		String file = Utilities.takeScreenshot();
 		logger = extent.createTest(result.getName());
 		logger.log(Status.FAIL, MarkupHelper.createLabel(result.getName(), ExtentColor.RED));
 		try {
@@ -57,7 +56,7 @@ public class TestNGListener implements ITestListener {
 
 	@Override
 	public void onTestFailedWithTimeout(ITestResult result) {
-		String file = DriverFactory.takeScreenshot();
+		String file = Utilities.takeScreenshot();
 		logger = extent.createTest(result.getName());
 		logger.log(Status.FAIL, MarkupHelper.createLabel(result.getName(), ExtentColor.RED));
 		try {
