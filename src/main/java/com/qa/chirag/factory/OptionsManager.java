@@ -17,18 +17,18 @@ public class OptionsManager {
 
 	public ChromeOptions getChromeOptions() {
 		chrome = new ChromeOptions();
-		if (boolean.parseBoolean(prop.getProperty("headless")))
+		if (Boolean.parseBoolean(prop.getProperty("headless")))
 			chrome.addArguments("--headless");
-		if (boolean.parseBoolean(prop.getProperty("incognito")))
+		if (Boolean.parseBoolean(prop.getProperty("incognito")))
 			chrome.addArguments("--incognito");
 		return chrome;
 	}
 
 	public FirefoxOptions getFirefoxOptions() {
 		firefox = new FirefoxOptions();
-		if (boolean.parseBoolean(prop.getProperty("headless")))
+		if (Boolean.parseBoolean(prop.getProperty("headless")))
 			firefox.addArguments("--headless");
-		if (boolean.parseBoolean(prop.getProperty("incognito")))
+		if (Boolean.parseBoolean(prop.getProperty("incognito")))
 			firefox.addArguments("--incognito");
 		return firefox;
 	}
