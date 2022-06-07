@@ -21,6 +21,7 @@ public class OptionsManager {
 			chrome.addArguments("--headless");
 		if (Boolean.parseBoolean(prop.getProperty("incognito")))
 			chrome.addArguments("--incognito");
+		chrome.addArguments("--window-size=1920,1080");
 		return chrome;
 	}
 
@@ -30,6 +31,7 @@ public class OptionsManager {
 			firefox.addArguments("--headless");
 		if (Boolean.parseBoolean(prop.getProperty("incognito")))
 			firefox.addArguments("--incognito");
+		firefox.addArguments("--window-size=1920,1080");
 		return firefox;
 	}
 }
