@@ -15,7 +15,7 @@ public class OptionsManager {
 		this.prop = prop;
 	}
 
-	public ChromeOptions getChromeOptions() {
+	ChromeOptions getChromeOptions() {
 		chrome = new ChromeOptions();
 		if (Boolean.parseBoolean(prop.getProperty("headless")))
 			chrome.addArguments("--headless");
@@ -24,7 +24,7 @@ public class OptionsManager {
 		return chrome;
 	}
 
-	public FirefoxOptions getFirefoxOptions() {
+	FirefoxOptions getFirefoxOptions() {
 		firefox = new FirefoxOptions();
 		if (Boolean.parseBoolean(prop.getProperty("headless")))
 			firefox.addArguments("--headless");
