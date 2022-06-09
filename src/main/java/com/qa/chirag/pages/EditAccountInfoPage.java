@@ -26,12 +26,12 @@ public class EditAccountInfoPage {
 	public AccountPage editInfo(String firstname, String lastname, String email, String telephone) {
 		elementUtil.doScroll(h1Label);
 		elementUtil.doClear(txtFirstName);
-		elementUtil.doClear(txtLastName);
-		elementUtil.doClear(txtEmail);
-		elementUtil.doClear(txtTelephone);
 		elementUtil.doSendKeys(txtFirstName, firstname);
+		elementUtil.doClear(txtLastName);
 		elementUtil.doSendKeys(txtLastName, lastname);
+		elementUtil.doClear(txtEmail);
 		elementUtil.doSendKeys(txtEmail, email);
+		elementUtil.doClear(txtTelephone);
 		elementUtil.doSendKeys(txtTelephone, telephone);
 		elementUtil.doClick(btnSubmit);
 		return new AccountPage(driver);
