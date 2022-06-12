@@ -3,7 +3,7 @@
 
 	<groupId>AutomationFramework</groupId>
 	<artifactId>AutomationFramework</artifactId>
-	<version>2.0</version>
+	<version>3.0</version>
 	<packaging>jar</packaging>
 
 	<name>Chirag Mangukia</name>
