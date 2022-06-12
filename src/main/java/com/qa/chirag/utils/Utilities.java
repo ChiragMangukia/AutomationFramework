@@ -12,16 +12,41 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
 import com.google.common.io.Files;
+import com.qa.chirag.customexceptions.FrameworkException;
 import com.qa.chirag.factory.DriverFactory;
 
 public class Utilities extends DriverFactory {
 
 	public static Properties getProp() {
 		Properties prop = new Properties();
-		String path = "./src/test/resources/config/config.properties";
+		String path = null;
 
-		FileInputStream ip;
+		FileInputStream ip = null;
+
+		String envName = System.getProperty("env");
+
 		try {
+			if (envName == null) {
+				System.out.println("No env is found. Running the test on Prod");
+				path = "./src/test/resources/config/config.properties";
+			} else
+				switch (envName.toLowerCase()) {
+				case "qa":
+					path = "./src/test/resources/config/qa.config.properties";
+					break;
+				case "dev":
+					path = "./src/test/resources/config/dev.config.properties";
+					break;
+				case "uat":
+					path = "./src/test/resources/config/uat.config.properties";
+					break;
+				case "prod":
+					path = "./src/test/resources/config/prod.config.properties";
+					break;
+				default:
+					System.out.println("No valid env name found. Please pass the env name.");
+					throw new FrameworkException("No valid env found");
+				}
 			ip = new FileInputStream(path);
 			prop.load(ip);
 		} catch (FileNotFoundException e) {
