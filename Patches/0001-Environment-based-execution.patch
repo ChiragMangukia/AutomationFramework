@@ -1,0 +1,171 @@
+From 3acbeb819d2c247d46cca6cd56e67e135b7c3b29 Mon Sep 17 00:00:00 2001
+From: Chirag Mangukia <chirag.mangukia@gmail.com>
+Date: Sun, 12 Jun 2022 12:16:16 +0530
+Subject: [PATCH] Environment based execution
+
+---
+ pom.xml                                       | 26 +++++++++++++++++
+ .../customexceptions/FrameworkException.java  | 11 +++++++
+ .../java/com/qa/chirag/utils/Utilities.java   | 29 +++++++++++++++++--
+ .../resources/config/dev.config.properties    |  9 ++++++
+ .../resources/config/qa.config.properties     |  9 ++++++
+ .../resources/config/uat.config.properties    |  9 ++++++
+ 6 files changed, 91 insertions(+), 2 deletions(-)
+ create mode 100644 src/main/java/com/qa/chirag/customexceptions/FrameworkException.java
+ create mode 100644 src/test/resources/config/dev.config.properties
+ create mode 100644 src/test/resources/config/qa.config.properties
+ create mode 100644 src/test/resources/config/uat.config.properties
+
+diff --git a/pom.xml b/pom.xml
+index 48a00a2..c1c2f5b 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -37,4 +37,30 @@
+ 			<version>5.0.9</version>
+ 		</dependency>
+ 	</dependencies>
++	<build>
++		<plugins>
++			<plugin>
++				<groupId>org.apache.maven.plugins</groupId>
++				<artifactId>maven-compiler-plugin</artifactId>
++				<version>3.8.1</version>
++				<configuration>
++					<source>1.8</source>
++					<target>1.8</target>
++				</configuration>
++			</plugin>
++			<plugin>
++				<groupId>org.apache.maven.plugins</groupId>
++				<artifactId>maven-surefire-plugin</artifactId>
++				<version>2.20</version>
++				<configuration>
++					<forkCount>3</forkCount>
++					<reuseForks>true</reuseForks>
++					<argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
++					<suiteXmlFiles>
++						<suiteXmlFile>src/test/resources/testrunners/testng.xml</suiteXmlFile>
++					</suiteXmlFiles>
++				</configuration>
++			</plugin>
++		</plugins>
++	</build>
+ </project>
+\ No newline at end of file
+diff --git a/src/main/java/com/qa/chirag/customexceptions/FrameworkException.java b/src/main/java/com/qa/chirag/customexceptions/FrameworkException.java
+new file mode 100644
+index 0000000..6828e1d
+--- /dev/null
++++ b/src/main/java/com/qa/chirag/customexceptions/FrameworkException.java
+@@ -0,0 +1,11 @@
++package com.qa.chirag.customexceptions;
++
++public class FrameworkException extends RuntimeException {
++
++	private static final long serialVersionUID = 1L;
++
++	public FrameworkException(String msg) {
++		super(msg);
++		printStackTrace();
++	}
++}
+\ No newline at end of file
+diff --git a/src/main/java/com/qa/chirag/utils/Utilities.java b/src/main/java/com/qa/chirag/utils/Utilities.java
+index 55bdad5..03ffa0d 100644
+--- a/src/main/java/com/qa/chirag/utils/Utilities.java
++++ b/src/main/java/com/qa/chirag/utils/Utilities.java
+@@ -12,16 +12,41 @@ import org.openqa.selenium.OutputType;
+ import org.openqa.selenium.TakesScreenshot;
+ 
+ import com.google.common.io.Files;
++import com.qa.chirag.customexceptions.FrameworkException;
+ import com.qa.chirag.factory.DriverFactory;
+ 
+ public class Utilities extends DriverFactory {
+ 
+ 	public static Properties getProp() {
+ 		Properties prop = new Properties();
+-		String path = "./src/test/resources/config/config.properties";
++		String path = null;
++
++		FileInputStream ip = null;
++
++		String envName = System.getProperty("env");
+ 
+-		FileInputStream ip;
+ 		try {
++			if (envName == null) {
++				System.out.println("No env is found. Running the test on Prod");
++				path = "./src/test/resources/config/config.properties";
++			} else
++				switch (envName.toLowerCase()) {
++				case "qa":
++					path = "./src/test/resources/config/qa.config.properties";
++					break;
++				case "dev":
++					path = "./src/test/resources/config/dev.config.properties";
++					break;
++				case "uat":
++					path = "./src/test/resources/config/uat.config.properties";
++					break;
++				case "prod":
++					path = "./src/test/resources/config/prod.config.properties";
++					break;
++				default:
++					System.out.println("No valid env name found. Please pass the env name.");
++					throw new FrameworkException("No valid env found");
++				}
+ 			ip = new FileInputStream(path);
+ 			prop.load(ip);
+ 		} catch (FileNotFoundException e) {
+diff --git a/src/test/resources/config/dev.config.properties b/src/test/resources/config/dev.config.properties
+new file mode 100644
+index 0000000..833628b
+--- /dev/null
++++ b/src/test/resources/config/dev.config.properties
+@@ -0,0 +1,9 @@
++browser = firefox
++url = https://naveenautomationlabs.com/opencart
++username = xilobe5964@pidhoes.com
++password = Automation@123
++headless = false
++
++firstname = xilobe
++lastname = wiao
++phone = 9876543210
+\ No newline at end of file
+diff --git a/src/test/resources/config/qa.config.properties b/src/test/resources/config/qa.config.properties
+new file mode 100644
+index 0000000..62f7b24
+--- /dev/null
++++ b/src/test/resources/config/qa.config.properties
+@@ -0,0 +1,9 @@
++browser = chrome
++url = https://naveenautomationlabs.com/opencart
++username = xilobe5964@pidhoes.com
++password = Automation@123
++headless = false
++
++firstname = xilobe
++lastname = wiao
++phone = 9876543210
+\ No newline at end of file
+diff --git a/src/test/resources/config/uat.config.properties b/src/test/resources/config/uat.config.properties
+new file mode 100644
+index 0000000..62f7b24
+--- /dev/null
++++ b/src/test/resources/config/uat.config.properties
+@@ -0,0 +1,9 @@
++browser = chrome
++url = https://naveenautomationlabs.com/opencart
++username = xilobe5964@pidhoes.com
++password = Automation@123
++headless = false
++
++firstname = xilobe
++lastname = wiao
++phone = 9876543210
+\ No newline at end of file
+-- 
+2.36.1.windows.1
+
