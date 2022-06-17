@@ -12,7 +12,7 @@ public class ExtentReport {
 	public ExtentReports initReport() {
 
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());// time stamp
-		String repName = "Test-Report-" + timeStamp + ".html";
+		String repName = "TestReport.html";
 		String browser = Utilities.getProp().getProperty("browser");
 
 		ExtentReports extent = new ExtentReports();
