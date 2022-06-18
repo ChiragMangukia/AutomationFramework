@@ -1,8 +1,5 @@
 package com.qa.chirag.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
@@ -11,7 +8,6 @@ public class ExtentReport {
 
 	public ExtentReports initReport() {
 
-		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());// time stamp
 		String repName = "TestReport.html";
 		String browser = Utilities.getProp().getProperty("browser");
 
