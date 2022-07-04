@@ -1,7 +1,7 @@
 package com.qa.chirag.utils;
 
-public class Browsers {
-
+public interface Browser {
+	
 	public static final String CHROME = "Chrome";
 
 	public static final String FIREFOX = "Firefox";

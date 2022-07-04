@@ -31,16 +31,16 @@ public class Utilities extends DriverFactory {
 				path = "./src/test/resources/config/config.properties";
 			} else
 				switch (envName.toLowerCase()) {
-				case "qa":
+				case Environment.QA:
 					path = "./src/test/resources/config/qa.config.properties";
 					break;
-				case "dev":
+				case Environment.DEV:
 					path = "./src/test/resources/config/dev.config.properties";
 					break;
-				case "uat":
+				case Environment.UAT:
 					path = "./src/test/resources/config/uat.config.properties";
 					break;
-				case "prod":
+				case Environment.PROD:
 					path = "./src/test/resources/config/prod.config.properties";
 					break;
 				default:
@@ -66,7 +66,6 @@ public class Utilities extends DriverFactory {
 
 	/**
 	 *
-	 * @param driver Accepts WebDriver object
 	 * @return Screenshots are stored in Screenshot folder at the root directory.
 	 *         Saved file name is returned.
 	 */

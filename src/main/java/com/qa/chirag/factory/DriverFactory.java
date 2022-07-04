@@ -4,8 +4,7 @@ import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 
-import com.qa.chirag.utils.Browsers;
-
+import com.qa.chirag.utils.Browser;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DriverFactory {
@@ -19,9 +18,9 @@ public class DriverFactory {
 		if (driver == null) {
 			optionsManager = new OptionsManager(prop);
 			String browser = prop.getProperty("browser").trim();
-			if (browser.equalsIgnoreCase(Browsers.CHROME)) {
+			if (browser.equalsIgnoreCase(Browser.CHROME)) {
 				tlDriver.set(WebDriverManager.chromedriver().capabilities(optionsManager.getChromeOptions()).create());
-			} else if (browser.equalsIgnoreCase(Browsers.FIREFOX)) {
+			} else if (browser.equalsIgnoreCase(Browser.FIREFOX)) {
 				tlDriver.set(
 						WebDriverManager.firefoxdriver().capabilities(optionsManager.getFirefoxOptions()).create());
 			}
