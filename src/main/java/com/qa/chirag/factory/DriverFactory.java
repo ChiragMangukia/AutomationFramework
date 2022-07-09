@@ -9,13 +9,12 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DriverFactory {
 
-	protected static WebDriver driver = null;
+	protected static WebDriver driver;
 	OptionsManager optionsManager;
 
 	private static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
 
 	public WebDriver initDriver(Properties prop) {
-		if (driver == null) {
 			optionsManager = new OptionsManager(prop);
 			String browser = prop.getProperty("browser").trim();
 			if (browser.equalsIgnoreCase(Browser.CHROME)) {
@@ -24,7 +23,6 @@ public class DriverFactory {
 				tlDriver.set(
 						WebDriverManager.firefoxdriver().capabilities(optionsManager.getFirefoxOptions()).create());
 			}
-		}
 		getDriver().manage().deleteAllCookies();
 		getDriver().manage().window().maximize();
 		getDriver().get(prop.getProperty("url").trim());
