@@ -17,21 +17,31 @@ public class OptionsManager {
 
 	ChromeOptions getChromeOptions() {
 		chrome = new ChromeOptions();
+
+		if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+			chrome.setCapability("enableVNC", true);
+			chrome.setBrowserVersion(prop.getProperty("browserversion"));
+		}
+
 		if (Boolean.parseBoolean(prop.getProperty("headless")))
 			chrome.addArguments("--headless");
 		if (Boolean.parseBoolean(prop.getProperty("incognito")))
 			chrome.addArguments("--incognito");
-		chrome.addArguments("--window-size=1920,1080");
 		return chrome;
 	}
 
 	FirefoxOptions getFirefoxOptions() {
 		firefox = new FirefoxOptions();
+
+		if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+			firefox.setCapability("enableVNC", true);
+			firefox.setBrowserVersion(prop.getProperty("browserversion"));
+		}
+
 		if (Boolean.parseBoolean(prop.getProperty("headless")))
 			firefox.addArguments("--headless");
 		if (Boolean.parseBoolean(prop.getProperty("incognito")))
 			firefox.addArguments("--incognito");
-		firefox.addArguments("--window-size=1920,1080");
 		return firefox;
 	}
 }
