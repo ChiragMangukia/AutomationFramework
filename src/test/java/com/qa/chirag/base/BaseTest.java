@@ -4,6 +4,7 @@ import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 
 import com.qa.chirag.factory.DriverFactory;
 import com.qa.chirag.pages.AccountPage;
@@ -33,7 +34,8 @@ public class BaseTest {
 	protected ProductPage productPage;
 	protected BrandPage brandPage;
 
-	public BaseTest() {
+	@BeforeTest
+	public void setup() {
 		df = new DriverFactory();
 		prop = Utilities.getProp();
 		driver = df.initDriver(prop);
@@ -45,6 +47,5 @@ public class BaseTest {
 	@AfterTest
 	public void tearDown() {
 		driver.quit();
-		driver = null;
 	}
 }

@@ -1,16 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="OpenCart">
+<suite name="OpenCart" verbose="4" thread-count="4" parallel="tests">
 	<listeners>
 		<listener class-name="com.qa.chirag.listeners.TestNGListener" />
 	</listeners>
-	<test name="Test">
+	<test name="HomePage test">
 		<classes>
 			<class name="com.qa.chirag.testcases.HomePageTest" />
+		</classes>
+	</test>
+	<test name = "LoginPage Test">
+		<classes>
 			<class name="com.qa.chirag.testcases.LoginPageTest" />
+		</classes>
+	</test>
+	<test name = "DesktopPage Test">
+		<classes>
 			<class name="com.qa.chirag.testcases.DesktopsPageTest" />
+		</classes>
+	</test>
+	<test name = "AccountPage Test">
+		<classes>
 			<class name="com.qa.chirag.testcases.AccountPageTest" />
+		</classes>
+	</test>
+	<test name = "ProductPage Test">
+		<classes>
 			<class name="com.qa.chirag.testcases.ProductPageTest" />
+		</classes>
+	</test>
+	<test name = "BrandPage Test">
+		<classes>
 			<class name="com.qa.chirag.testcases.BrandPageTest" />
 		</classes>
 	</test> <!-- Test -->

@@ -27,7 +27,7 @@ public class Utilities extends DriverFactory {
 
 		try {
 			if (envName == null) {
-				System.out.println("No env is found. Running the test on Prod");
+				//System.out.println("No env is found. Running the test on Prod");
 				path = "./src/test/resources/config/config.properties";
 			} else
 				switch (envName.toLowerCase()) {
