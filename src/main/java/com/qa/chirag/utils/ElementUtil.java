@@ -4,6 +4,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +15,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ElementUtil {
+	
+	private static Logger log = LogManager.getLogger(ElementUtil.class);
 
 	WebDriver driver;
 
@@ -30,22 +34,29 @@ public class ElementUtil {
 
 	public void doClear(By by) {
 		doGetElement(by).clear();
+		log.debug("Cleared the text using doClear method");
 	}
 
 	public String doGetTitle() {
-		return driver.getTitle().trim();
+		String title = driver.getTitle().trim();
+		log.debug("Title captured using doGetTitle method: " + title);
+		return title;
 	}
 
 	public String doGetCurrentURL() {
-		return driver.getCurrentUrl();
+		String url = driver.getCurrentUrl();
+		log.debug("Current URL captured using doGetCurrentURL method: " + url);
+		return url;
 	}
 
 	public void doSendKeys(By by, String value) {
 		doGetElement(by).sendKeys(value);
+		log.debug("Inserted text using doSendKeys method: " + value);
 	}
 
 	public void doClick(By by) {
 		doGetElement(by).click();
+		log.debug("Clicked on a Locator using doClick method: " + by);
 	}
 
 	public void waitForWebElements(By by, Duration timeOutInSeconds) {
@@ -54,7 +65,9 @@ public class ElementUtil {
 	}
 
 	public String doGetText(By by) {
-		return doGetElement(by).getText().trim();
+		String text = doGetElement(by).getText().trim();
+		log.debug("Captured text using doGetText method: " + text);
+		return text;
 	}
 
 	public List<String> doGetTextListFromWebElements(By by) {
@@ -67,15 +80,18 @@ public class ElementUtil {
 
 	public void doRefreshPage() {
 		driver.navigate().refresh();
+		log.debug("Page refreshed");
 	}
 
 	public void doNavigateBack() {
 		driver.navigate().back();
+		log.debug("Navigated back");
 	}
 
 	public void doWait(By by, Duration timeOutInSeconds) {
 		WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+		log.debug("WaitDriverWait performed for " + timeOutInSeconds +" seconds for: " + by);
 	}
 
 	public void doWait(By by) {
@@ -86,20 +102,24 @@ public class ElementUtil {
 	public void doScroll(By by) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("arguments[0].scrollIntoView();", doGetElement(by));
+		log.debug("Scrolled till " + by);
 	}
 
 	public void sleep(int timeOutInSeconds) {
 		try {
 			Thread.sleep(timeOutInSeconds * 1000);
 		} catch (InterruptedException e) {
+			log.error(e.getMessage());
 		}
 	}
 
 	public boolean checkIfElementIsPresent(By by) {
 		try {
 			doGetElement(by);
+			log.debug(by + " element is present");
 			return true;
 		} catch (Exception e) {
+			log.error(e.getMessage());
 			return false;
 		}
 	}
@@ -108,7 +128,9 @@ public class ElementUtil {
 		Select select = new Select(doGetElement(by));
 		try {
 			select.selectByVisibleText(textToSelect);
+			log.debug(textToSelect + " selected from Dropdown");
 		} catch (Exception e) {
+			log.error(e.getMessage());
 		}
 	}
 

@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
@@ -16,8 +18,11 @@ import com.qa.chirag.customexceptions.FrameworkException;
 import com.qa.chirag.factory.DriverFactory;
 
 public class Utilities extends DriverFactory {
+	
+	private static Logger log = LogManager.getLogger(DriverFactory.class);
 
 	public static Properties getProp() {
+		
 		Properties prop = new Properties();
 		String path = null;
 
@@ -27,24 +32,28 @@ public class Utilities extends DriverFactory {
 
 		try {
 			if (envName == null) {
-				//System.out.println("No env is found. Running the test on Prod");
+				log.warn("No env is found. Running the test on Prod");
 				path = "./src/test/resources/config/config.properties";
 			} else
 				switch (envName.toLowerCase()) {
 				case Environment.QA:
 					path = "./src/test/resources/config/qa.config.properties";
+					log.info("Running the test on QA environment");
 					break;
 				case Environment.DEV:
 					path = "./src/test/resources/config/dev.config.properties";
+					log.info("Running the test on Dev environment");
 					break;
 				case Environment.UAT:
 					path = "./src/test/resources/config/uat.config.properties";
+					log.info("Running the test on UAT environment");
 					break;
 				case Environment.PROD:
 					path = "./src/test/resources/config/prod.config.properties";
+					log.info("Running the test on Prod environment");
 					break;
 				default:
-					System.out.println("No valid env name found. Please pass the env name.");
+					log.error("No valid env name found. Please pass the env name");
 					throw new FrameworkException("No valid env found");
 				}
 			ip = new FileInputStream(path);

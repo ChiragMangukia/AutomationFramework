@@ -1,5 +1,7 @@
 package com.qa.chirag.listeners;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -10,10 +12,13 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
+import com.qa.chirag.factory.DriverFactory;
 import com.qa.chirag.utils.ExtentReport;
 import com.qa.chirag.utils.Utilities;
 
 public class TestNGListener implements ITestListener {
+	
+	private static Logger log = LogManager.getLogger(TestNGListener.class);
 
 	ThreadLocal<ExtentTest> test = new ThreadLocal<>();
 
@@ -34,12 +39,14 @@ public class TestNGListener implements ITestListener {
 		test.set(logger);
 		logger = test.get();
 		logger.getModel().setStartTime(Utilities.getTime(result.getStartMillis()));
+		log.info(result.getMethod() + "Test started");
 	}
 
 	@Override
 	public void onTestSuccess(ITestResult result) {
 		logger.log(Status.PASS, MarkupHelper.createLabel("Test passed", ExtentColor.GREEN));
 		logger.getModel().setEndTime(Utilities.getTime(result.getEndMillis()));
+		log.info(result.getMethod() + "Test succeeded");
 	}
 
 	@Override
@@ -52,12 +59,14 @@ public class TestNGListener implements ITestListener {
 		} catch (Exception e) {
 		}
 		logger.getModel().setEndTime(Utilities.getTime(result.getEndMillis()));
+		log.info(result.getMethod() + "Test failed");
 	}
 
 	@Override
 	public void onTestSkipped(ITestResult result) {
 		logger.log(Status.SKIP, MarkupHelper.createLabel("Test skipped", ExtentColor.ORANGE));
 		logger.getModel().setEndTime(Utilities.getTime(result.getEndMillis()));
+		log.info(result.getMethod() + "Test skipped");
 	}
 
 	@Override
@@ -72,6 +81,7 @@ public class TestNGListener implements ITestListener {
 		try {
 			logger.fail(result.getThrowable().getMessage(), MediaEntityBuilder
 					.createScreenCaptureFromPath(System.getProperty("user.dir") + "/Screenshots/" + file).build());
+			log.info(result.getMethod() + "Test failed with Timeout");
 		} catch (Exception e) {
 		}
 	}

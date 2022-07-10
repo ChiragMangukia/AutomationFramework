@@ -1,5 +1,7 @@
 package com.qa.chirag.listeners;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -12,6 +14,8 @@ import com.qa.chirag.factory.DriverFactory;
 import io.qameta.allure.Attachment;
 
 public class AllureListener extends DriverFactory implements ITestListener {
+	
+	private static Logger log = LogManager.getLogger(AllureListener.class);
 
 	private static String getTestMethodName(ITestResult iTestResult) {
 		return iTestResult.getMethod().getConstructorOrMethod().getName();
@@ -46,27 +50,30 @@ public class AllureListener extends DriverFactory implements ITestListener {
 
 	@Override
 	public void onTestStart(ITestResult iTestResult) {
+		log.info(getTestMethodName(iTestResult) + " Test started");
 	}
 
 	@Override
 	public void onTestSuccess(ITestResult iTestResult) {
+		log.info(getTestMethodName(iTestResult) + " Test succedeed");
 	}
 
 	@Override
 	public void onTestFailure(ITestResult iTestResult) {
-		Object testClass = iTestResult.getInstance();
 		//WebDriver driver = BasePage.getDriver();
 		// Allure ScreenShotRobot and SaveTestLog
 		if (driver instanceof WebDriver) {
-			System.out.println("Screenshot captured for test case:" + getTestMethodName(iTestResult));
+			log.debug("Screenshot captured for test case: " + getTestMethodName(iTestResult));
 			saveScreenshotPNG(driver);
 		}
 		// Save a log on allure.
-		saveTextLog(getTestMethodName(iTestResult) + " failed and screenshot taken!");		
+		saveTextLog(getTestMethodName(iTestResult) + " failed and screenshot taken!");
+		log.error(getTestMethodName(iTestResult) + " failed and screenshot taken!");
 	}
 
 	@Override
 	public void onTestSkipped(ITestResult iTestResult) {
+		log.info(getTestMethodName(iTestResult) + " Test skipped");
 	}
 
 	@Override
