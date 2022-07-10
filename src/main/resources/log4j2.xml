@@ -13,7 +13,10 @@
 		</Console>
 	</Appenders>
 	<Loggers>
-		<Root level="info">
+		<Logger name="io.netty" level="OFF">
+			<AppenderRef ref="File" />
+		</Logger>
+		<Root level="DEBUG">
 			<AppenderRef ref="File" />
 		</Root>
 	</Loggers>

@@ -1,5 +1,7 @@
 package com.qa.chirag.pages;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -7,6 +9,8 @@ import com.qa.chirag.utils.Constants;
 import com.qa.chirag.utils.ElementUtil;
 
 public class LoginPage {
+	
+	private static Logger log = LogManager.getLogger(LoginPage.class);
 
 	private WebDriver driver;
 
@@ -35,6 +39,7 @@ public class LoginPage {
 				elementUtil.doSendKeys(txtEmail, username);
 				elementUtil.doSendKeys(txtPassword, password);
 				elementUtil.doClick(loginBtn);
+				log.info("Login using " + username + " and " + password);
 			}
 		}
 		return new AccountPage(driver);
