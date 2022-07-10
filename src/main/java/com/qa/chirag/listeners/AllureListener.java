@@ -54,7 +54,6 @@ public class AllureListener extends DriverFactory implements ITestListener {
 
 	@Override
 	public void onTestFailure(ITestResult iTestResult) {
-		Object testClass = iTestResult.getInstance();
 		//WebDriver driver = BasePage.getDriver();
 		// Allure ScreenShotRobot and SaveTestLog
 		if (driver instanceof WebDriver) {
