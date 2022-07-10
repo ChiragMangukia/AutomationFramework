@@ -3,6 +3,7 @@
 <suite name="OpenCart" verbose="4" thread-count="4" parallel="tests">
 	<listeners>
 		<listener class-name="com.qa.chirag.listeners.AllureListener" />
+		<listener class-name="com.qa.chirag.listeners.AnnotationTransformer" />
 	</listeners>
 	<test name="HomePage test">
 		<classes>
