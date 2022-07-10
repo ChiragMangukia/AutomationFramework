@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -16,6 +18,7 @@ public class DriverFactory {
 
 	protected static WebDriver driver;
 	private static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
+	private static Logger log = LogManager.getLogger(DriverFactory.class);
 
 	OptionsManager optionsManager;
 	Properties prop;
@@ -26,9 +29,11 @@ public class DriverFactory {
 		if (browser.equalsIgnoreCase(Browser.CHROME)) {
 			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
 				initRemoteDriver(Browser.CHROME);
+				log.info("Chrome RemoteDriver initiated");
 			} else {
 				tlDriver.set(
 						WebDriverManager.chromedriver().capabilities(optionsManager.getChromeOptions()).create());
+				log.info("ChromeDriver initiated");
 			}
 		} else if (browser.equalsIgnoreCase(Browser.FIREFOX)) {
 			if (Boolean.parseBoolean(prop.getProperty("remote"))) {

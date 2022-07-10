@@ -17,6 +17,7 @@ test-output/
 Reports/
 Screenshots/
 allure-results/
+Logs/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
