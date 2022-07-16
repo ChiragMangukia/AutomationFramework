@@ -38,6 +38,7 @@ public class DriverFactory {
 		} else if (browser.equalsIgnoreCase(Browser.FIREFOX)) {
 			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
 				initRemoteDriver(Browser.FIREFOX);
+				log.info("Firefox RemoteDriver initiated");
 			} else {
 				tlDriver.set(
 						WebDriverManager.firefoxdriver().capabilities(optionsManager.getFirefoxOptions()).create());

@@ -2,10 +2,14 @@ package com.qa.chirag.factory;
 
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class OptionsManager {
+	
+	private static Logger log = LogManager.getLogger(OptionsManager.class);
 
 	Properties prop;
 	ChromeOptions chrome;
@@ -21,6 +25,7 @@ public class OptionsManager {
 		if (Boolean.parseBoolean(prop.getProperty("remote"))) {
 			chrome.setCapability("enableVNC", true);
 			chrome.setBrowserVersion(prop.getProperty("browserversion"));
+			log.info("Set Chrome browser version as " + prop.getProperty("browserversion"));
 		}
 
 		if (Boolean.parseBoolean(prop.getProperty("headless")))
@@ -36,6 +41,7 @@ public class OptionsManager {
 		if (Boolean.parseBoolean(prop.getProperty("remote"))) {
 			firefox.setCapability("enableVNC", true);
 			firefox.setBrowserVersion(prop.getProperty("browserversion"));
+			log.info("Set Firefox browser version as " + prop.getProperty("browserversion"));
 		}
 
 		if (Boolean.parseBoolean(prop.getProperty("headless")))
