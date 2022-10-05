@@ -42,6 +42,7 @@ public class DriverFactory {
 			} else {
 				tlDriver.set(
 						WebDriverManager.firefoxdriver().capabilities(optionsManager.getFirefoxOptions()).create());
+				log.info("FirefoxDriver initiated");
 			}
 		}
 		getDriver().manage().deleteAllCookies();
