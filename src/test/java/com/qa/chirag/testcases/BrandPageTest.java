@@ -9,7 +9,7 @@ import com.qa.chirag.base.BaseTest;
 public class BrandPageTest extends BaseTest {
 
 	@BeforeClass
-	public void brandPageSetup() {
+	void brandPageSetup() {
 		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
 		desktopsPage = commonsPage.goToDesktopsPage();
 		productPage = desktopsPage.selectProduct("Canon EOS 5D");
@@ -17,12 +17,12 @@ public class BrandPageTest extends BaseTest {
 	}
 
 	@Test(priority = 1)
-	public void verifyTitleTest() {
+	void verifyTitleTest() {
 		Assert.assertEquals(brandPage.getTitle(), "Canon");
 	}
 
 	@Test(priority = 2)
-	public void verifyBrandNameTest() {
+	void verifyBrandNameTest() {
 		Assert.assertEquals(brandPage.getBrandName(), "Canon");
 	}
 }

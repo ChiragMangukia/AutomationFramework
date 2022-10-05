@@ -10,23 +10,23 @@ import com.qa.chirag.utils.Constants;
 public class DesktopsPageTest extends BaseTest {
 
 	@BeforeClass
-	public void desktopsPageSetup() {
+	void desktopsPageSetup() {
 		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
 		desktopsPage = commonsPage.goToDesktopsPage();
 	}
 
 	@Test(priority = 1)
-	public void titleTest() {
+	void titleTest() {
 		Assert.assertEquals(desktopsPage.getPageTitle(), Constants.DESKTOPS_PAGE_TITLE);
 	}
 
 	@Test(priority = 2)
-	public void productLimitDropdownTest() {
+	void productLimitDropdownTest() {
 		desktopsPage.selectFromShowDropdown(100);
 	}
 
 	@Test(priority = 3)
-	public void selectProductTest() {
+	void selectProductTest() {
 		desktopsPage.selectProduct("Samsung SyncMaster");
 	}
 }

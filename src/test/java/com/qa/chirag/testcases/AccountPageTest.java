@@ -10,12 +10,12 @@ import com.qa.chirag.utils.Constants;
 public class AccountPageTest extends BaseTest {
 
 	@BeforeClass
-	public void accountPageSetup() {
+	void accountPageSetup() {
 		accountPage = loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
 	}
 
 	@Test(priority = 1)
-	public void editAccountDetails() {
+	void editAccountDetails() {
 		accountPage = commonsPage.goToMyAccount();
 		editAccountInfoPage = accountPage.openEditAcInfoPage();
 		editAccountInfoPage.editInfo(prop.getProperty("firstname"), prop.getProperty("lastname"),
@@ -24,12 +24,12 @@ public class AccountPageTest extends BaseTest {
 	}
 
 	@Test(priority = 2)
-	public void goToHomePage() {
+	void goToHomePage() {
 		commonsPage.clickLogo();
 	}
 
 	@Test(priority = 3)
-	public void logoutTest() {
+	void logoutTest() {
 		commonsPage.doLogout();
 	}
 

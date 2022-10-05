@@ -10,25 +10,25 @@ import com.qa.chirag.utils.Constants;
 public class HomePageTest extends BaseTest {
 
 	@BeforeClass
-	public void homePageSetup() {
+	void homePageSetup() {
 		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
 		commonsPage.clickLogo();
 	}
 
 	@Test(priority = 1)
-	public void titleTest() {
+	void titleTest() {
 		String actualTitle = homePage.getPageTitle();
 		Assert.assertEquals(actualTitle, Constants.HOME_PAGE_TITLE);
 	}
 
 	@Test(priority = 2)
-	public void urlTest() {
+	void urlTest() {
 		String actualURL = homePage.getCurrentURL();
 		Assert.assertEquals(actualURL, Constants.HOME_PAGE_URL_FRACTION);
 	}
 
 	@Test(priority = 3)
-	public void addProductToCartTest() {
+	void addProductToCartTest() {
 		homePage.addProductToCart("iPhone");
 	}
 

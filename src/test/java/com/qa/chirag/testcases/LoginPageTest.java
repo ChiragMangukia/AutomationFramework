@@ -8,7 +8,7 @@ import com.qa.chirag.base.BaseTest;
 public class LoginPageTest extends BaseTest {
 
 	@Test
-	public void loginTest() {
+	void loginTest() {
 		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
 		Assert.assertTrue(true);
 	}

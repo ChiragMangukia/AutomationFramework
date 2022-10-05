@@ -9,19 +9,19 @@ import com.qa.chirag.base.BaseTest;
 public class ProductPageTest extends BaseTest {
 
 	@BeforeClass
-	public void productPageSetup() {
+	void productPageSetup() {
 		loginPage.doLogin(prop.getProperty("username").trim(), prop.getProperty("password").trim());
 		desktopsPage = commonsPage.goToDesktopsPage();
 		productPage = desktopsPage.selectProduct("Apple Cinema");
 	}
 
 	@Test
-	public void verifyProductNameTest() {
+	void verifyProductNameTest() {
 		Assert.assertEquals(productPage.getProductName(), "Apple Cinema 30\"");
 	}
 
 	@Test
-	public void dateSelectionTest() {
+	void dateSelectionTest() {
 		productPage.selectDate("14082022");
 	}
 }
