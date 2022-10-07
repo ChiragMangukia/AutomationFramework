@@ -12,7 +12,6 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
-import com.qa.chirag.factory.DriverFactory;
 import com.qa.chirag.utils.ExtentReport;
 import com.qa.chirag.utils.Utilities;
 
